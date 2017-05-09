@@ -172,6 +172,22 @@ class ImpersonatorTest extends TestCase
      * @test
      *
      * @expectedException         \Arcanedev\LaravelImpersonator\Exceptions\ImpersonationException
+     * @expectedExceptionMessage  The impersonator & impersonated with must be different.
+     */
+    public function it_must_throw_exception_if_impersonator_and_impersonated_are_same()
+    {
+        $this->loginWithId(1);
+
+        $this->impersonator->start(
+            $this->getAuthenticatedUser(),
+            $this->impersonator->findUserById(1)
+        );
+    }
+
+    /**
+     * @test
+     *
+     * @expectedException         \Arcanedev\LaravelImpersonator\Exceptions\ImpersonationException
      * @expectedExceptionMessage  The impersonated with `id`=[4] cannot be impersonated.
      */
     public function it_must_throw_exception_if_impersonated_cannot_be_impersonated() // WHAT ??

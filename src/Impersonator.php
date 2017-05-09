@@ -216,15 +216,16 @@ class Impersonator implements Contracts\Impersonator
      */
     private function checkImpersonation(Impersonatable $impersonator, Impersonatable $impersonated)
     {
-        if ( ! $this->isEnabled()) {
+        if ( ! $this->isEnabled())
             throw new Exceptions\ImpersonationException("The impersonation is disabled.");
-        }
 
-        if ( ! $impersonator->canImpersonate()) {
+        if ($impersonator->getAuthIdentifier() == $impersonated->getAuthIdentifier())
+            throw new Exceptions\ImpersonationException('The impersonator & impersonated with must be different.');
+
+        if ( ! $impersonator->canImpersonate())
             throw new Exceptions\ImpersonationException(
                 "The impersonator with `{$impersonator->getAuthIdentifierName()}`=[{$impersonator->getAuthIdentifier()}] doesn't have the ability to impersonate."
             );
-        }
 
         if ( ! $impersonated->canBeImpersonated())
             throw new Exceptions\ImpersonationException(
