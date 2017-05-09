@@ -55,7 +55,7 @@ Any ideas are welcome. Feel free to submit any issues or pull requests, please c
 [badge_build]:     https://img.shields.io/travis/ARCANEDEV/LaravelImpersonator.svg?style=flat-square
 [badge_coverage]:  https://img.shields.io/scrutinizer/coverage/g/ARCANEDEV/LaravelImpersonator.svg?style=flat-square
 [badge_quality]:   https://img.shields.io/scrutinizer/g/ARCANEDEV/LaravelImpersonator.svg?style=flat-square
-[badge_insight]:   https://img.shields.io/sensiolabs/i/[:id].svg?style=flat-square
+[badge_insight]:   https://img.shields.io/sensiolabs/i/a9bfffe8-8d21-434c-a1cc-07bbbee97cb7.svg?style=flat-square
 [badge_issues]:    https://img.shields.io/github/issues/ARCANEDEV/LaravelImpersonator.svg?style=flat-square
 [badge_package]:   https://img.shields.io/badge/package-arcanedev/laravel--impersonator-blue.svg?style=flat-square
 [badge_release]:   https://img.shields.io/packagist/v/arcanedev/laravel-impersonator.svg?style=flat-square
@@ -68,4 +68,4 @@ Any ideas are welcome. Feel free to submit any issues or pull requests, please c
 [link-packagist]:     https://packagist.org/packages/arcanedev/laravel-impersonator
 [link-travis]:        https://travis-ci.org/ARCANEDEV/LaravelImpersonator
 [link-scrutinizer]:   https://scrutinizer-ci.com/g/ARCANEDEV/LaravelImpersonator/?branch=master
-[link-insight]:       https://insight.sensiolabs.com/projects/[:id]
+[link-insight]:       https://insight.sensiolabs.com/projects/a9bfffe8-8d21-434c-a1cc-07bbbee97cb7
