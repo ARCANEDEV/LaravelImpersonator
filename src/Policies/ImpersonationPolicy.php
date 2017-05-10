@@ -25,28 +25,28 @@ class ImpersonationPolicy extends Policy
      */
 
     /**
-     * Check if the current user has the `can impersonate` ability.
+     * Check if the current user can impersonate.
      *
-     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonator
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonater
      *
      * @return bool
      */
-    public function canImpersonatePolicy(Impersonatable $impersonator)
+    public function canImpersonatePolicy(Impersonatable $impersonater)
     {
-        return $this->isEnabled() && $impersonator->canImpersonate();
+        return $this->isEnabled() && $impersonater->canImpersonate();
     }
 
     /**
      * Check if the given user can be impersonated.
      *
-     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonator
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonater
      * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonated
      *
      * @return bool
      */
-    public function canBeImpersonatedPolicy(Impersonatable $impersonator, Impersonatable $impersonated)
+    public function canBeImpersonatedPolicy(Impersonatable $impersonater, Impersonatable $impersonated)
     {
-        return $this->canImpersonatePolicy($impersonator) && $impersonated->canBeImpersonated();
+        return $this->canImpersonatePolicy($impersonater) && $impersonated->canBeImpersonated();
     }
 
     /* -----------------------------------------------------------------
