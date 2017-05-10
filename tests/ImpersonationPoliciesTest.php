@@ -72,4 +72,16 @@ class ImpersonationPoliciesTest extends TestCase
 
         $response->assertStatus(302);
     }
+
+    /** @test */
+    public function it_can_deny_access_if_impersonation_is_disabled()
+    {
+        $this->disableImpersonations();
+
+        $this->loginWithId(1);
+
+        $response = $this->get(route('auth::impersonator.start', [2]));
+
+        $response->assertStatus(403);
+    }
 }

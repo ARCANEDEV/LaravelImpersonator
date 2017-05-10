@@ -208,7 +208,7 @@ class ImpersonatorTest extends TestCase
      */
     public function it_must_throw_exception_if_impersonator_is_disabled()
     {
-        $this->app['config']->set('impersonator.enabled', false);
+        $this->disableImpersonations();
 
         $this->loginWithId(1);
 

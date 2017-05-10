@@ -98,6 +98,14 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
+     * Disable the impersonations.
+     */
+    protected function disableImpersonations()
+    {
+        $this->app['config']->set('impersonator.enabled', false);
+    }
+
+    /**
      * Login the user with the given id.
      *
      * @param  int  $id
