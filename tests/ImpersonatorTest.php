@@ -56,6 +56,21 @@ class ImpersonatorTest extends TestCase
     }
 
     /** @test */
+    public function it_can_be_instantiated_with_helper()
+    {
+        $impersonator = impersonator();
+
+        $expectations = [
+            \Arcanedev\LaravelImpersonator\Contracts\Impersonator::class,
+            \Arcanedev\LaravelImpersonator\Impersonator::class,
+        ];
+
+        foreach ($expectations as $expected) {
+            $this->assertInstanceOf($expected, $impersonator);
+        }
+    }
+
+    /** @test */
     public function it_can_find_a_user()
     {
         $admin = $this->impersonator->findUserById(1);

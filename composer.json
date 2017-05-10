@@ -27,7 +27,8 @@
     "autoload": {
         "psr-4": {
             "Arcanedev\\LaravelImpersonator\\": "src/"
-        }
+        },
+        "files": ["helpers.php"]
     },
     "autoload-dev": {
         "psr-4": {
