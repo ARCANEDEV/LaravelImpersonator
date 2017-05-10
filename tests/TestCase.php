@@ -68,6 +68,8 @@ abstract class TestCase extends BaseTestCase
      */
     protected function getEnvironmentSetUp($app)
     {
+        $app['config']->set('app.debug', true);
+
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
             'driver'   => 'sqlite',
@@ -76,6 +78,8 @@ abstract class TestCase extends BaseTestCase
         ]);
 
         $app['config']->set('auth.providers.users.model', Stubs\Models\User::class);
+
+        $this->setUpRoutes($app['router']);
     }
 
     /* -----------------------------------------------------------------
@@ -121,5 +125,27 @@ abstract class TestCase extends BaseTestCase
     protected function assertIsLoggedIn()
     {
         $this->assertTrue($this->app['auth']->check());
+    }
+
+    /**
+     * @param  \Illuminate\Routing\Router  $router
+     */
+    private function setUpRoutes($router)
+    {
+        $router->group([
+            'namespace'  => 'Arcanedev\LaravelImpersonator\Tests\Stubs\Controllers',
+            'as'         => 'auth::impersonator.',
+            'middleware' => 'web',
+        ], function () use ($router) {
+            $router->get('start/{id}', [
+                'uses' => 'ImpersonatorController@start',
+                'as'   => 'start', // auth::impersonator.start
+            ]);
+
+            $router->get('stop', [
+                'uses' => 'ImpersonatorController@stop',
+                'as'   => 'stop', // auth::impersonator.stop
+            ]);
+        });
     }
 }

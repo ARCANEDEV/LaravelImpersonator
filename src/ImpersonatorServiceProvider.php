@@ -37,6 +37,8 @@ class ImpersonatorServiceProvider extends PackageServiceProvider
 
         $this->registerConfig();
 
+        $this->registerProvider(Providers\AuthorizationServiceProvider::class);
+
         $this->singleton(Contracts\Impersonator::class, Impersonator::class);
         $this->extendAuthDriver();
     }
