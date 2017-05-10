@@ -140,6 +140,11 @@ abstract class TestCase extends BaseTestCase
      */
     private function setUpRoutes($router)
     {
+        $router->aliasMiddleware(
+            'no-impersonations',
+            \Arcanedev\LaravelImpersonator\Http\Middleware\ImpersonationNotAllowed::class
+        );
+
         $router->group([
             'namespace'  => 'Arcanedev\LaravelImpersonator\Tests\Stubs\Controllers',
             'as'         => 'auth::impersonator.',
@@ -153,6 +158,15 @@ abstract class TestCase extends BaseTestCase
             $router->get('stop', [
                 'uses' => 'ImpersonatorController@stop',
                 'as'   => 'stop', // auth::impersonator.stop
+            ]);
+        });
+
+        $router->group(['middleware' => ['web', 'auth', 'no-impersonations']], function () use ($router) {
+            $router->get('dashboard', [
+                'as'   => 'admin::dashboard',
+                'uses' => function() {
+                    return 'Dashboard page';
+                }
             ]);
         });
     }

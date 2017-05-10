@@ -55,9 +55,7 @@ class User extends Authenticatable implements Impersonatable
      */
     public function canImpersonate()
     {
-        return in_array($this->attributes['email'], [
-            'admin1@example.com', 'admin2@example.com'
-        ]);
+        return $this->isAdmin();
     }
 
     /**
@@ -68,5 +66,17 @@ class User extends Authenticatable implements Impersonatable
     public function canBeImpersonated()
     {
         return ! $this->canImpersonate();
+    }
+
+    /**
+     * Check if the user is admin.
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return in_array($this->attributes['email'], [
+            'admin1@example.com', 'admin2@example.com'
+        ]);
     }
 }
