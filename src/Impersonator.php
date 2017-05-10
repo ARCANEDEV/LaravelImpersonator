@@ -107,22 +107,22 @@ class Impersonator implements Contracts\Impersonator
     /**
      * Start the impersonation.
      *
-     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonator
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonater
      * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonated
      *
      * @return bool
      */
-    public function start(Impersonatable $impersonator, Impersonatable $impersonated)
+    public function start(Impersonatable $impersonater, Impersonatable $impersonated)
     {
-        $this->checkImpersonation($impersonator, $impersonated);
+        $this->checkImpersonation($impersonater, $impersonated);
 
         try {
-            session()->put($this->getSessionKey(), $impersonator->getAuthIdentifier());
+            session()->put($this->getSessionKey(), $impersonater->getAuthIdentifier());
             $this->auth()->silentLogout();
             $this->auth()->silentLogin($impersonated);
 
             $this->events()->dispatch(
-                new Events\ImpersonationStarted($impersonator, $impersonated)
+                new Events\ImpersonationStarted($impersonater, $impersonated)
             );
 
             return true;
@@ -139,14 +139,14 @@ class Impersonator implements Contracts\Impersonator
     {
         try {
             $impersonated = $this->auth()->user();
-            $impersonator = $this->findUserById($this->getImpersonatorId());
+            $impersonater = $this->findUserById($this->getImpersonatorId());
 
             $this->auth()->silentLogout();
-            $this->auth()->silentLogin($impersonator);
+            $this->auth()->silentLogin($impersonater);
             $this->clear();
 
             $this->events()->dispatch(
-                new Events\ImpersonationStopped($impersonator, $impersonated)
+                new Events\ImpersonationStopped($impersonater, $impersonated)
             );
 
             return true;
@@ -209,24 +209,68 @@ class Impersonator implements Contracts\Impersonator
     /**
      * Check the impersonation.
      *
-     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonator
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonater
      * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonated
      *
-     * @throws Exceptions\ImpersonationException
+     * @throws \Arcanedev\LaravelImpersonator\Exceptions\ImpersonationException
      */
-    private function checkImpersonation(Impersonatable $impersonator, Impersonatable $impersonated)
+    private function checkImpersonation(Impersonatable $impersonater, Impersonatable $impersonated)
+    {
+        $this->mustBeEnabled();
+        $this->mustBeDifferentImpersonatable($impersonater, $impersonated);
+        $this->checkImpersonater($impersonater);
+        $this->checkImpersonated($impersonated);
+    }
+
+    /**
+     * Check if the impersonation is enabled.
+     *
+     * @throws \Arcanedev\LaravelImpersonator\Exceptions\ImpersonationException
+     */
+    private function mustBeEnabled()
     {
         if ( ! $this->isEnabled())
             throw new Exceptions\ImpersonationException("The impersonation is disabled.");
+    }
 
-        if ($impersonator->getAuthIdentifier() == $impersonated->getAuthIdentifier())
-            throw new Exceptions\ImpersonationException('The impersonator & impersonated with must be different.');
+    /**
+     * Check the impersonater and the impersonated are different.
+     *
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonater
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonated
+     *
+     * @throws \Arcanedev\LaravelImpersonator\Exceptions\ImpersonationException
+     */
+    private function mustBeDifferentImpersonatable(Impersonatable $impersonater, Impersonatable $impersonated)
+    {
+        if ($impersonater->getAuthIdentifier() == $impersonated->getAuthIdentifier())
+            throw new Exceptions\ImpersonationException('The impersonater & impersonated with must be different.');
+    }
 
-        if ( ! $impersonator->canImpersonate())
+    /**
+     * Check the impersonater.
+     *
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonater
+     *
+     * @throws \Arcanedev\LaravelImpersonator\Exceptions\ImpersonationException
+     */
+    private function checkImpersonater(Impersonatable $impersonater)
+    {
+        if ( ! $impersonater->canImpersonate())
             throw new Exceptions\ImpersonationException(
-                "The impersonator with `{$impersonator->getAuthIdentifierName()}`=[{$impersonator->getAuthIdentifier()}] doesn't have the ability to impersonate."
+                "The impersonater with `{$impersonater->getAuthIdentifierName()}`=[{$impersonater->getAuthIdentifier()}] doesn't have the ability to impersonate."
             );
+    }
 
+    /**
+     * Check the impersonated.
+     *
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonated
+     *
+     * @throws \Arcanedev\LaravelImpersonator\Exceptions\ImpersonationException
+     */
+    private function checkImpersonated(Impersonatable $impersonated)
+    {
         if ( ! $impersonated->canBeImpersonated())
             throw new Exceptions\ImpersonationException(
                 "The impersonated with `{$impersonated->getAuthIdentifierName()}`=[{$impersonated->getAuthIdentifier()}] cannot be impersonated."

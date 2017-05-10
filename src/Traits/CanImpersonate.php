@@ -1,7 +1,6 @@
 <?php namespace Arcanedev\LaravelImpersonator\Traits;
 
 use Arcanedev\LaravelImpersonator\Contracts\Impersonatable;
-use Arcanedev\LaravelImpersonator\Contracts\Impersonator;
 
 /**
  * Trait     HasImpersonation
@@ -26,21 +25,17 @@ trait CanImpersonate
     public function impersonate(Impersonatable $impersonated)
     {
         /** @var  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $this */
-        return $this->impersonatorManager()->start($this, $impersonated);
+        return impersonator()->start($this, $impersonated);
     }
 
     /**
-     * Leave the current impersonation.
-     *
-     * @param   void
+     * Stop the impersonation.
      *
      * @return  bool
      */
     public function stopImpersonation()
     {
-        return $this->isImpersonated()
-            ? $this->impersonatorManager()->stop()
-            : false;
+        return $this->isImpersonated() ? impersonator()->stop() : false;
     }
 
     /* -----------------------------------------------------------------
@@ -53,20 +48,14 @@ trait CanImpersonate
      *
      * @return  bool
      */
-    public function canImpersonate()
-    {
-        return true;
-    }
+    abstract public function canImpersonate();
 
     /**
      * Check if the current model can be impersonated.
      *
      * @return  bool
      */
-    public function canBeImpersonated()
-    {
-        return true;
-    }
+    abstract public function canBeImpersonated();
 
     /**
      * Check if impersonation is ongoing.
@@ -75,21 +64,6 @@ trait CanImpersonate
      */
     public function isImpersonated()
     {
-        return $this->impersonatorManager()->isImpersonating();
-    }
-
-    /* -----------------------------------------------------------------
-     |  Other Methods
-     | -----------------------------------------------------------------
-     */
-
-    /**
-     * Get the impersonator manager.
-     *
-     * @return \Arcanedev\LaravelImpersonator\Contracts\Impersonator
-     */
-    protected function impersonatorManager()
-    {
-        return app(Impersonator::class);
+        return impersonator()->isImpersonating();
     }
 }

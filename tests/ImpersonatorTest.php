@@ -1,6 +1,7 @@
 <?php namespace Arcanedev\LaravelImpersonator\Tests;
 
 use Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User;
+use Arcanedev\LaravelImpersonator\Contracts\Impersonator as ImpersonatorContract;
 
 /**
  * Class     ImpersonatorTest
@@ -27,7 +28,7 @@ class ImpersonatorTest extends TestCase
     {
         parent::setUp();
 
-        $this->impersonator = $this->app->make(\Arcanedev\LaravelImpersonator\Contracts\Impersonator::class);
+        $this->impersonator = $this->app->make(ImpersonatorContract::class);
     }
 
     protected function tearDown()
@@ -46,7 +47,7 @@ class ImpersonatorTest extends TestCase
     public function it_can_be_instantiated()
     {
         $expectations = [
-            \Arcanedev\LaravelImpersonator\Contracts\Impersonator::class,
+            ImpersonatorContract::class,
             \Arcanedev\LaravelImpersonator\Impersonator::class,
         ];
 
@@ -61,7 +62,7 @@ class ImpersonatorTest extends TestCase
         $impersonator = impersonator();
 
         $expectations = [
-            \Arcanedev\LaravelImpersonator\Contracts\Impersonator::class,
+            ImpersonatorContract::class,
             \Arcanedev\LaravelImpersonator\Impersonator::class,
         ];
 
@@ -73,7 +74,9 @@ class ImpersonatorTest extends TestCase
     /** @test */
     public function it_can_find_a_user()
     {
+        /** @var \Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User  $admin */
         $admin = $this->impersonator->findUserById(1);
+        /** @var \Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User  $user */
         $user  = $this->impersonator->findUserById(2);
 
         $this->assertInstanceOf(User::class, $admin);
@@ -171,9 +174,9 @@ class ImpersonatorTest extends TestCase
      * @test
      *
      * @expectedException         \Arcanedev\LaravelImpersonator\Exceptions\ImpersonationException
-     * @expectedExceptionMessage  The impersonator with `id`=[2] doesn't have the ability to impersonate.
+     * @expectedExceptionMessage  The impersonater with `id`=[2] doesn't have the ability to impersonate.
      */
-    public function it_must_throw_exception_if_impersonator_cannot_impersonate()
+    public function it_must_throw_exception_if_impersonater_cannot_impersonate()
     {
         $this->loginWithId(2);
 
@@ -187,9 +190,9 @@ class ImpersonatorTest extends TestCase
      * @test
      *
      * @expectedException         \Arcanedev\LaravelImpersonator\Exceptions\ImpersonationException
-     * @expectedExceptionMessage  The impersonator & impersonated with must be different.
+     * @expectedExceptionMessage  The impersonater & impersonated with must be different.
      */
-    public function it_must_throw_exception_if_impersonator_and_impersonated_are_same()
+    public function it_must_throw_exception_if_impersonater_and_impersonated_are_same()
     {
         $this->loginWithId(1);
 
@@ -221,7 +224,7 @@ class ImpersonatorTest extends TestCase
      * @expectedException         \Arcanedev\LaravelImpersonator\Exceptions\ImpersonationException
      * @expectedExceptionMessage  The impersonation is disabled.
      */
-    public function it_must_throw_exception_if_impersonator_is_disabled()
+    public function it_must_throw_exception_if_impersonater_is_disabled()
     {
         $this->disableImpersonations();
 
@@ -231,5 +234,11 @@ class ImpersonatorTest extends TestCase
             $this->getAuthenticatedUser(),
             $this->impersonator->findUserById(2)
         );
+    }
+
+    /** @test */
+    public function it_must_return_false_if_not_in_impersonating_mode()
+    {
+        $this->assertFalse($this->impersonator->stop());
     }
 }

@@ -35,12 +35,12 @@ interface Impersonator
     /**
      * Start the impersonation.
      *
-     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonator
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonater
      * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonated
      *
      * @return bool
      */
-    public function start(Impersonatable $impersonator, Impersonatable $impersonated);
+    public function start(Impersonatable $impersonater, Impersonatable $impersonated);
 
     /**
      * Stop the impersonation.

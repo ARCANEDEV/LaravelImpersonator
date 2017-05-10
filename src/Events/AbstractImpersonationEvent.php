@@ -26,7 +26,7 @@ abstract class AbstractImpersonationEvent
      */
 
     /** @var \Arcanedev\LaravelImpersonator\Contracts\Impersonatable */
-    public $impersonator;
+    public $impersonater;
 
     /** @var \Arcanedev\LaravelImpersonator\Contracts\Impersonatable */
     public $impersonated;
@@ -39,12 +39,12 @@ abstract class AbstractImpersonationEvent
     /**
      * AbstractImpersonationEvent constructor.
      *
-     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonator
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonater
      * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonated
      */
-    public function __construct(Impersonatable $impersonator, Impersonatable $impersonated)
+    public function __construct(Impersonatable $impersonater, Impersonatable $impersonated)
     {
-        $this->impersonator = $impersonator;
+        $this->impersonater = $impersonater;
         $this->impersonated = $impersonated;
     }
 }

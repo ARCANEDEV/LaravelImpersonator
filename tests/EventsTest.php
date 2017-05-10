@@ -83,17 +83,17 @@ class EventsTest extends TestCase
         Event::assertNotDispatched(Logout::class);
     }
 
-    protected function assertImpersonationStartedEventDispatched($impersonator, $impersonated)
+    protected function assertImpersonationStartedEventDispatched($impersonater, $impersonated)
     {
-        Event::assertDispatched(ImpersonationStarted::class, function ($event) use ($impersonator, $impersonated) {
-            return $event->impersonator->id == $impersonator->id && $event->impersonated->id == $impersonated->id;
+        Event::assertDispatched(ImpersonationStarted::class, function ($event) use ($impersonater, $impersonated) {
+            return $event->impersonater->id == $impersonater->id && $event->impersonated->id == $impersonated->id;
         });
     }
 
-    protected function assertImpersonationStoppedEventDispatched($impersonator, $impersonated)
+    protected function assertImpersonationStoppedEventDispatched($impersonater, $impersonated)
     {
-        Event::assertDispatched(ImpersonationStopped::class, function ($event) use ($impersonator, $impersonated) {
-            return $event->impersonator->id == $impersonator->id && $event->impersonated->id == $impersonated->id;
+        Event::assertDispatched(ImpersonationStopped::class, function ($event) use ($impersonater, $impersonated) {
+            return $event->impersonater->id == $impersonater->id && $event->impersonated->id == $impersonated->id;
         });
     }
 }
