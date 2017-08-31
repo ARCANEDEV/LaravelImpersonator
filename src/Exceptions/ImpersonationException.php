@@ -6,7 +6,4 @@
  * @package  Arcanedev\LaravelImpersonator\Exceptions
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class ImpersonationException extends \Exception
-{
-    //
-}
+class ImpersonationException extends \Exception {}
