@@ -80,19 +80,17 @@ class ImpersonatorServiceProvider extends PackageServiceProvider
 
         $this->app['auth']->extend('session', function (Application $app, $name, array $config) use ($auth) {
             $provider = $auth->createUserProvider($config['provider']);
-            $guard    = new Guard\SessionGuard($name, $provider, $app['session.store']);
 
-            if (method_exists($guard, 'setCookieJar')) {
-                $guard->setCookieJar($app['cookie']);
-            }
-            if (method_exists($guard, 'setDispatcher')) {
-                $guard->setDispatcher($app['events']);
-            }
-            if (method_exists($guard, 'setRequest')) {
-                $guard->setRequest($app->refresh('request', $guard, 'setRequest'));
-            }
+            return tap(new Guard\SessionGuard($name, $provider, $app['session.store']), function ($guard) use ($app) {
+                if (method_exists($guard, 'setCookieJar'))
+                    $guard->setCookieJar($app['cookie']);
 
-            return $guard;
+                if (method_exists($guard, 'setDispatcher'))
+                    $guard->setDispatcher($app['events']);
+
+                if (method_exists($guard, 'setRequest'))
+                    $guard->setRequest($app->refresh('request', $guard, 'setRequest'));
+            });
         });
     }
 }

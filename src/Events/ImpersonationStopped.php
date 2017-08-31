@@ -6,7 +6,4 @@
  * @package  Arcanedev\LaravelImpersonator\Events
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class ImpersonationStopped extends AbstractImpersonationEvent
-{
-    //
-}
+class ImpersonationStopped extends AbstractImpersonationEvent {}

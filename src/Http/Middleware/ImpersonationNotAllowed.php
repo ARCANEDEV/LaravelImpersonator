@@ -49,9 +49,8 @@ class ImpersonationNotAllowed
      */
     public function handle($request, Closure $next)
     {
-        if ($this->impersonator->isImpersonating())
-            return redirect()->back();
-
-        return $next($request);
+        return $this->impersonator->isImpersonating()
+            ? redirect()->back()
+            : $next($request);
     }
 }
