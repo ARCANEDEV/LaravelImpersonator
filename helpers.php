@@ -1,5 +1,7 @@
 <?php
 
+use Arcanedev\LaravelImpersonator\Contracts\Impersonator;
+
 if ( ! function_exists('impersonator')) {
     /**
      * Get the impersonator instance.
@@ -7,6 +9,6 @@ if ( ! function_exists('impersonator')) {
      * @return \Arcanedev\LaravelImpersonator\Contracts\Impersonator
      */
     function impersonator() {
-        return app(Arcanedev\LaravelImpersonator\Contracts\Impersonator::class);
+        return app(Impersonator::class);
     }
 }

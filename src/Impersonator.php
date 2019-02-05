@@ -151,7 +151,9 @@ class Impersonator implements Contracts\Impersonator
 
             return true;
         }
-        catch (\Exception $e) { return false; }
+        catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -211,8 +213,6 @@ class Impersonator implements Contracts\Impersonator
      *
      * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonater
      * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonated
-     *
-     * @throws \Arcanedev\LaravelImpersonator\Exceptions\ImpersonationException
      */
     private function checkImpersonation(Impersonatable $impersonater, Impersonatable $impersonated)
     {
@@ -230,7 +230,9 @@ class Impersonator implements Contracts\Impersonator
     private function mustBeEnabled()
     {
         if ( ! $this->isEnabled())
-            throw new Exceptions\ImpersonationException("The impersonation is disabled.");
+            throw new Exceptions\ImpersonationException(
+                'The impersonation is disabled.'
+            );
     }
 
     /**
@@ -244,7 +246,9 @@ class Impersonator implements Contracts\Impersonator
     private function mustBeDifferentImpersonatable(Impersonatable $impersonater, Impersonatable $impersonated)
     {
         if ($impersonater->getAuthIdentifier() == $impersonated->getAuthIdentifier())
-            throw new Exceptions\ImpersonationException('The impersonater & impersonated with must be different.');
+            throw new Exceptions\ImpersonationException(
+                'The impersonater & impersonated with must be different.'
+            );
     }
 
     /**
