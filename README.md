@@ -18,7 +18,7 @@ Feel free to check out the [releases](https://github.com/ARCANEDEV/LaravelImpers
 
 ### Features
 
-  * Laravel `5.4` to `5.6` are supported.
+  * Laravel `5.4` to `5.7` are supported.
   * Easy setup &amp; configuration.
   * Well documented &amp; IDE Friendly.
   * Well tested with maximum code quality.
@@ -51,7 +51,7 @@ Any ideas are welcome. Feel free to submit any issues or pull requests, please c
 - [All Contributors][link-contributors]
 
 [badge_license]:   https://img.shields.io/packagist/l/arcanedev/laravel-impersonator.svg?style=flat-square
-[badge_laravel]:   https://img.shields.io/badge/Laravel-5.4%20to%205.6-orange.svg?style=flat-square
+[badge_laravel]:   https://img.shields.io/badge/Laravel-5.4%20to%205.7-orange.svg?style=flat-square
 [badge_build]:     https://img.shields.io/travis/ARCANEDEV/LaravelImpersonator.svg?style=flat-square
 [badge_coverage]:  https://img.shields.io/scrutinizer/coverage/g/ARCANEDEV/LaravelImpersonator.svg?style=flat-square
 [badge_quality]:   https://img.shields.io/scrutinizer/g/ARCANEDEV/LaravelImpersonator.svg?style=flat-square

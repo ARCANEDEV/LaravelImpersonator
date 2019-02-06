@@ -127,7 +127,9 @@ class Impersonator implements Contracts\Impersonator
 
             return true;
         }
-        catch (\Exception $e) { return false; }
+        catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
