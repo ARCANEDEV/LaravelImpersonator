@@ -23,14 +23,14 @@ class ImpersonatorServiceProviderTest extends TestCase
      | -----------------------------------------------------------------
      */
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->provider = $this->app->getProvider(ImpersonatorServiceProvider::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->provider);
 
@@ -53,7 +53,7 @@ class ImpersonatorServiceProviderTest extends TestCase
         ];
 
         foreach ($expectations as $expected) {
-            $this->assertInstanceOf($expected, $this->provider);
+            static::assertInstanceOf($expected, $this->provider);
         }
     }
 
@@ -64,6 +64,6 @@ class ImpersonatorServiceProviderTest extends TestCase
             \Arcanedev\LaravelImpersonator\Contracts\Impersonator::class,
         ];
 
-        $this->assertSame($expected, $this->provider->provides());
+        static::assertSame($expected, $this->provider->provides());
     }
 }

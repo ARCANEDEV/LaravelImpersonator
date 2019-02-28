@@ -1,5 +1,7 @@
 <?php namespace Arcanedev\LaravelImpersonator\Tests;
 
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Class     ImpersonationPoliciesTest
  *
@@ -18,11 +20,10 @@ class ImpersonationPoliciesTest extends TestCase
     {
         $this->loginWithId(1);
 
-        $response = $this->get(route('auth::impersonator.start', [2]));
-
-        $response->assertSuccessful();
-        $response->assertSessionHas('impersonator_id');
-        $response->assertSeeText('Impersonation started');
+        $this->get(route('auth::impersonator.start', [2]))
+             ->assertSuccessful()
+             ->assertSessionHas('impersonator_id')
+             ->assertSeeText('Impersonation started');
     }
 
     /** @test */
@@ -30,9 +31,8 @@ class ImpersonationPoliciesTest extends TestCase
     {
         $this->loginWithId(2);
 
-        $response = $this->get(route('auth::impersonator.start', [3]));
-
-        $response->assertStatus(403);
+        $this->get(route('auth::impersonator.start', [3]))
+             ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     /** @test */
@@ -40,9 +40,8 @@ class ImpersonationPoliciesTest extends TestCase
     {
         $this->loginWithId(1);
 
-        $response = $this->get(route('auth::impersonator.start', [4]));
-
-        $response->assertStatus(403);
+        $this->get(route('auth::impersonator.start', [4]))
+             ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 
     /** @test */
@@ -50,17 +49,15 @@ class ImpersonationPoliciesTest extends TestCase
     {
         $this->loginWithId(1);
 
-        $response = $this->get(route('auth::impersonator.start', [2]));
+        $this->get(route('auth::impersonator.start', [2]))
+             ->assertSuccessful()
+             ->assertSessionHas('impersonator_id')
+             ->assertSeeText('Impersonation started');
 
-        $response->assertSuccessful();
-        $response->assertSessionHas('impersonator_id');
-        $response->assertSeeText('Impersonation started');
-
-        $response = $this->get(route('auth::impersonator.stop'));
-
-        $response->assertSuccessful();
-        $response->assertSessionMissing('impersonator_id');
-        $response->assertSeeText('Impersonation stopped');
+        $this->get(route('auth::impersonator.stop'))
+             ->assertSuccessful()
+             ->assertSessionMissing('impersonator_id')
+             ->assertSeeText('Impersonation stopped');
     }
 
     /** @test */
@@ -68,9 +65,8 @@ class ImpersonationPoliciesTest extends TestCase
     {
         $this->loginWithId(1);
 
-        $response = $this->get(route('auth::impersonator.stop'));
-
-        $response->assertStatus(302);
+        $this->get(route('auth::impersonator.stop'))
+             ->assertStatus(Response::HTTP_FOUND);
     }
 
     /** @test */
@@ -80,8 +76,7 @@ class ImpersonationPoliciesTest extends TestCase
 
         $this->loginWithId(1);
 
-        $response = $this->get(route('auth::impersonator.start', [2]));
-
-        $response->assertStatus(403);
+        $this->get(route('auth::impersonator.start', [2]))
+             ->assertStatus(Response::HTTP_FORBIDDEN);
     }
 }

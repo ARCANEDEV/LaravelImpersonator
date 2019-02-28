@@ -18,7 +18,7 @@ class ImpersonationTraitTest extends TestCase
     {
         $admin = $this->loginWithId(1);
 
-        $this->assertTrue($admin->canImpersonate());
+        static::assertTrue($admin->canImpersonate());
     }
 
     /** @test */
@@ -26,7 +26,7 @@ class ImpersonationTraitTest extends TestCase
     {
         $user = $this->loginWithId(2);
 
-        $this->assertFalse($user->canImpersonate());
+        static::assertFalse($user->canImpersonate());
     }
 
     /** @test */
@@ -34,7 +34,7 @@ class ImpersonationTraitTest extends TestCase
     {
         $user = $this->loginWithId(2);
 
-        $this->assertTrue($user->canBeImpersonated());
+        static::assertTrue($user->canBeImpersonated());
     }
 
     /** @test */
@@ -42,7 +42,7 @@ class ImpersonationTraitTest extends TestCase
     {
         $admin = $this->loginWithId(1);
 
-        $this->assertFalse($admin->canBeImpersonated());
+        static::assertFalse($admin->canBeImpersonated());
     }
 
     /** @test */
@@ -51,21 +51,21 @@ class ImpersonationTraitTest extends TestCase
         /** @var \Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User $admin */
         $admin = $this->loginWithId(1);
 
-        $this->assertFalse($admin->isImpersonated());
+        static::assertFalse($admin->isImpersonated());
 
         /** @var \Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User $user */
         $user = $this->impersonator()->findUserById(2);
 
         $admin->impersonate($user);
 
-        $this->assertTrue($user->isImpersonated());
-        $this->assertSame($user->id, $this->getAuthenticatedUser()->getKey());
-        $this->assertSame($admin->id, $this->impersonator()->getImpersonatorId());
+        static::assertTrue($user->isImpersonated());
+        static::assertSame($user->id, $this->getAuthenticatedUser()->getKey());
+        static::assertSame($admin->id, $this->impersonator()->getImpersonatorId());
 
         $admin->stopImpersonation();
 
-        $this->assertFalse($user->isImpersonated());
-        $this->assertSame($admin->id, $this->getAuthenticatedUser()->getKey());
-        $this->assertNotSame($user->id, $this->getAuthenticatedUser()->getKey());
+        static::assertFalse($user->isImpersonated());
+        static::assertSame($admin->id, $this->getAuthenticatedUser()->getKey());
+        static::assertNotSame($user->id, $this->getAuthenticatedUser()->getKey());
     }
 }
