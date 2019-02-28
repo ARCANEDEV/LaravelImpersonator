@@ -20,7 +20,7 @@ class EventsTest extends TestCase
      | -----------------------------------------------------------------
      */
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -38,14 +38,14 @@ class EventsTest extends TestCase
         $admin = $this->getAdminUser();
         $user  = $this->getRegularUSer();
 
-        $this->assertTrue($admin->impersonate($user));
-        $this->assertTrue($user->stopImpersonation());
+        static::assertTrue($admin->impersonate($user));
+        static::assertTrue($user->stopImpersonation());
 
-        $this->assertImpersonationStartedEventDispatched($admin, $user);
-        $this->assertLoginEventNotDispatched();
+        static::assertImpersonationStartedEventDispatched($admin, $user);
+        static::assertLoginEventNotDispatched();
 
-        $this->assertImpersonationStoppedEventDispatched($admin, $user);
-        $this->assertLogoutEventNotDispatched();
+        static::assertImpersonationStoppedEventDispatched($admin, $user);
+        static::assertLogoutEventNotDispatched();
     }
 
     /* -----------------------------------------------------------------
@@ -73,24 +73,24 @@ class EventsTest extends TestCase
         return User::find(2);
     }
 
-    protected function assertLoginEventNotDispatched()
+    protected static function assertLoginEventNotDispatched()
     {
         Event::assertNotDispatched(Login::class);
     }
 
-    private function assertLogoutEventNotDispatched()
+    private static function assertLogoutEventNotDispatched()
     {
         Event::assertNotDispatched(Logout::class);
     }
 
-    protected function assertImpersonationStartedEventDispatched($impersonater, $impersonated)
+    protected static function assertImpersonationStartedEventDispatched($impersonater, $impersonated)
     {
         Event::assertDispatched(ImpersonationStarted::class, function ($event) use ($impersonater, $impersonated) {
             return $event->impersonater->id == $impersonater->id && $event->impersonated->id == $impersonated->id;
         });
     }
 
-    protected function assertImpersonationStoppedEventDispatched($impersonater, $impersonated)
+    protected static function assertImpersonationStoppedEventDispatched($impersonater, $impersonated)
     {
         Event::assertDispatched(ImpersonationStopped::class, function ($event) use ($impersonater, $impersonated) {
             return $event->impersonater->id == $impersonater->id && $event->impersonated->id == $impersonated->id;

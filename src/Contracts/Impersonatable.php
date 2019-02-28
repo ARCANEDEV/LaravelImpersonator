@@ -18,18 +18,16 @@ interface Impersonatable extends Authenticatable
     /**
      * Impersonate the given user.
      *
-     * @param   \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonated
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonated
      *
-     * @return  bool
+     * @return bool
      */
     public function impersonate(Impersonatable $impersonated);
 
     /**
      * Leave the current impersonation.
      *
-     * @param   void
-     *
-     * @return  bool
+     * @return bool
      */
     public function stopImpersonation();
 
@@ -41,21 +39,21 @@ interface Impersonatable extends Authenticatable
     /**
      * Check if the current modal can impersonate other models.
      *
-     * @return  bool
+     * @return bool
      */
     public function canImpersonate();
 
     /**
      * Check if the current model can be impersonated.
      *
-     * @return  bool
+     * @return bool
      */
     public function canBeImpersonated();
 
     /**
      * Check if impersonation is ongoing.
      *
-     * @return  bool
+     * @return bool
      */
     public function isImpersonated();
 }

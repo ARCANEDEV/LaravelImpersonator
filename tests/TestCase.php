@@ -18,14 +18,14 @@ abstract class TestCase extends BaseTestCase
     /**
      * Setup the test environment.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->artisan('migrate', ['--database' => 'testbench']);
+        $this->artisan('migrate', ['--database' => 'testing']);
 
         $this->loadMigrationsFrom([
-            '--database' => 'testbench',
+            '--database' => 'testing',
             '--realpath' => realpath(__DIR__.'/fixtures/database/migrations'),
         ]);
     }
@@ -40,43 +40,20 @@ abstract class TestCase extends BaseTestCase
     protected function getPackageProviders($app)
     {
         return [
-            \Orchestra\Database\ConsoleServiceProvider::class,
             \Arcanedev\LaravelImpersonator\ImpersonatorServiceProvider::class,
-        ];
-    }
-
-    /**
-     * Get package aliases.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     *
-     * @return array
-     */
-    protected function getPackageAliases($app)
-    {
-        return [
-            //
         ];
     }
 
     /**
      * Define environment setup.
      *
-     * @param  \Illuminate\Foundation\Application   $app
+     * @param  \Illuminate\Foundation\Application  $app
      *
      * @return void
      */
     protected function getEnvironmentSetUp($app)
     {
         $app['config']->set('app.debug', true);
-
-        $app['config']->set('database.default', 'testbench');
-        $app['config']->set('database.connections.testbench', [
-            'driver'   => 'sqlite',
-            'database' => ':memory:',
-            'prefix'   => '',
-        ]);
-
         $app['config']->set('auth.providers.users.model', Stubs\Models\User::class);
 
         $this->setUpRoutes($app['router']);
@@ -132,7 +109,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function assertIsLoggedIn()
     {
-        $this->assertTrue($this->app['auth']->check());
+        static::assertTrue($this->app['auth']->check());
     }
 
     /**
