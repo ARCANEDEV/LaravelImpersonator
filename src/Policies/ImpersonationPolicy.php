@@ -33,7 +33,8 @@ class ImpersonationPolicy extends Policy
      */
     public function canImpersonatePolicy(Impersonatable $impersonater)
     {
-        return $this->isEnabled() && $impersonater->canImpersonate();
+        return $this->isEnabled()
+            && $impersonater->canImpersonate();
     }
 
     /**
@@ -46,7 +47,8 @@ class ImpersonationPolicy extends Policy
      */
     public function canBeImpersonatedPolicy(Impersonatable $impersonater, Impersonatable $impersonated)
     {
-        return $this->canImpersonatePolicy($impersonater) && $impersonated->canBeImpersonated();
+        return $this->canImpersonatePolicy($impersonater)
+            && $impersonated->canBeImpersonated();
     }
 
     /* -----------------------------------------------------------------
