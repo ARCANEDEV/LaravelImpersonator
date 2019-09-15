@@ -1,6 +1,7 @@
 <?php namespace Arcanedev\LaravelImpersonator;
 
 use Arcanedev\LaravelImpersonator\Contracts\Impersonatable;
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
 
 /**
@@ -127,7 +128,7 @@ class Impersonator implements Contracts\Impersonator
 
             return true;
         }
-        catch (\Exception $e) {
+        catch (Exception $e) {
             return false;
         }
     }
@@ -153,7 +154,7 @@ class Impersonator implements Contracts\Impersonator
 
             return true;
         }
-        catch (\Exception $e) {
+        catch (Exception $e) {
             return false;
         }
     }

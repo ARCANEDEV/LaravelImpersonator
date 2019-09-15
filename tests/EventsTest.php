@@ -56,21 +56,21 @@ class EventsTest extends TestCase
     /**
      * Get the admin user.
      *
-     * @return \Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User
+     * @return \Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User|mixed
      */
     protected function getAdminUser()
     {
-        return User::find(1);
+        return User::query()->find(1);
     }
 
     /**
      * Get the regular user.
      *
-     * @return \Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User
+     * @return \Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User|mixed
      */
     protected function getRegularUSer()
     {
-        return User::find(2);
+        return User::query()->find(2);
     }
 
     protected static function assertLoginEventNotDispatched()
