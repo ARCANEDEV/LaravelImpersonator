@@ -18,7 +18,9 @@ abstract class AbstractImpersonationEvent
      | -----------------------------------------------------------------
      */
 
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable,
+        InteractsWithSockets,
+        SerializesModels;
 
     /* -----------------------------------------------------------------
      |  Properties
@@ -39,8 +41,8 @@ abstract class AbstractImpersonationEvent
     /**
      * AbstractImpersonationEvent constructor.
      *
-     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonater
-     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonated
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed  $impersonater
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed  $impersonated
      */
     public function __construct(Impersonatable $impersonater, Impersonatable $impersonated)
     {

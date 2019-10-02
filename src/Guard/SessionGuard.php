@@ -19,9 +19,9 @@ class SessionGuard extends BaseSessionGuard
     /**
      * Login the user into the app without firing the Login event.
      *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
+     * @param  \Illuminate\Contracts\Auth\Authenticatable|mixed  $user
      */
-    public function silentLogin(Authenticatable $user)
+    public function silentLogin(Authenticatable $user): void
     {
         $this->updateSession($user->getAuthIdentifier());
         $this->setUser($user);
@@ -30,7 +30,7 @@ class SessionGuard extends BaseSessionGuard
     /**
      * Logout the user without updating `remember_token` and without firing the Logout event.
      */
-    public function silentLogout()
+    public function silentLogout(): void
     {
         $this->clearUserDataFromStorage();
 

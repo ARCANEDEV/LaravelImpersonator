@@ -8,7 +8,7 @@ if ( ! function_exists('impersonator')) {
      *
      * @return \Arcanedev\LaravelImpersonator\Contracts\Impersonator
      */
-    function impersonator() {
+    function impersonator(): Impersonator {
         return app(Impersonator::class);
     }
 }
