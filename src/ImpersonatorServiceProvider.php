@@ -1,8 +1,9 @@
 <?php namespace Arcanedev\LaravelImpersonator;
 
-use Arcanedev\Support\PackageServiceProvider;
+use Arcanedev\Support\Providers\PackageServiceProvider;
 use Illuminate\Auth\SessionGuard as IlluminateSessionGuard;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Support\DeferrableProvider;
 
 /**
  * Class     ImpersonatorServiceProvider
@@ -10,7 +11,7 @@ use Illuminate\Contracts\Foundation\Application;
  * @package  Arcanedev\LaravelImpersonator
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class ImpersonatorServiceProvider extends PackageServiceProvider
+class ImpersonatorServiceProvider extends PackageServiceProvider implements DeferrableProvider
 {
     /* -----------------------------------------------------------------
      |  Properties
@@ -32,7 +33,7 @@ class ImpersonatorServiceProvider extends PackageServiceProvider
     /**
      * Register the service provider.
      */
-    public function register()
+    public function register(): void
     {
         parent::register();
 
@@ -47,10 +48,8 @@ class ImpersonatorServiceProvider extends PackageServiceProvider
     /**
      * Boot the service provider.
      */
-    public function boot()
+    public function boot(): void
     {
-        parent::boot();
-
         $this->publishConfig();
     }
 
@@ -59,7 +58,7 @@ class ImpersonatorServiceProvider extends PackageServiceProvider
      *
      * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return [
             Contracts\Impersonator::class,
@@ -74,7 +73,7 @@ class ImpersonatorServiceProvider extends PackageServiceProvider
     /**
      * Extend the auth session driver.
      */
-    private function extendAuthDriver()
+    private function extendAuthDriver(): void
     {
         /** @var  \Illuminate\Auth\AuthManager  $auth */
         $auth = $this->app['auth'];

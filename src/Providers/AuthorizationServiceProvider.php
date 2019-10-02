@@ -19,7 +19,7 @@ class AuthorizationServiceProvider extends ServiceProvider
     /**
      * Register any application authentication / authorization services.
      */
-    public function boot()
+    public function boot(): void
     {
         parent::registerPolicies();
 

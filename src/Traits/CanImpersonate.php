@@ -18,7 +18,7 @@ trait CanImpersonate
     /**
      * Impersonate the given user.
      *
-     * @param   \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonated
+     * @param   \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed  $impersonated
      *
      * @return  bool
      */

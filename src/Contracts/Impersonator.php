@@ -35,8 +35,8 @@ interface Impersonator
     /**
      * Start the impersonation.
      *
-     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonater
-     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonated
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed  $impersonater
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed  $impersonated
      *
      * @return bool
      */
