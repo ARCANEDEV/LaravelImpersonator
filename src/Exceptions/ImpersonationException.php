@@ -47,7 +47,10 @@ class ImpersonationException extends \Exception
     public static function cannotImpersonate(Impersonatable $impersonater): self
     {
         return static::make(
-            "The impersonater with `{$impersonater->getAuthIdentifierName()}`=[{$impersonater->getAuthIdentifier()}] doesn't have the ability to impersonate."
+            __("The impersonater with `:impersonator_name`=[:impersonator_id] doesn't have the ability to impersonate.", [
+                'impersonator_name' => $impersonater->getAuthIdentifierName(),
+                'impersonator_id'   => $impersonater->getAuthIdentifier(),
+            ])
         );
     }
 
@@ -61,7 +64,22 @@ class ImpersonationException extends \Exception
     public static function cannotBeImpersonated(Impersonatable $impersonated)
     {
         return static::make(
-            "The impersonated with `{$impersonated->getAuthIdentifierName()}`=[{$impersonated->getAuthIdentifier()}] cannot be impersonated."
+            __('The impersonated with `:impersonated_name`=[:impersonated_id] cannot be impersonated.', [
+                'impersonated_name' => $impersonated->getAuthIdentifierName(),
+                'impersonated_id' => $impersonated->getAuthIdentifier()
+            ])
+        );
+    }
+
+    /**
+     * Make an exception when the impersonator and the impersonated are the same person.
+     *
+     * @return static
+     */
+    public static function impersonaterAndImpersonatedAreSame()
+    {
+        return static::make(
+            __('The impersonater & impersonated with must be different.')
         );
     }
 }

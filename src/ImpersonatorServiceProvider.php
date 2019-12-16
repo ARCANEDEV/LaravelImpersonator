@@ -78,7 +78,7 @@ class ImpersonatorServiceProvider extends PackageServiceProvider implements Defe
         /** @var  \Illuminate\Auth\AuthManager  $auth */
         $auth = $this->app['auth'];
 
-        $this->app['auth']->extend('session', function (Application $app, $name, array $config) use ($auth) {
+        $auth->extend('session', function (Application $app, $name, array $config) use ($auth) {
             $provider = $auth->createUserProvider($config['provider']);
 
             return tap(

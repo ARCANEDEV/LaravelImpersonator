@@ -1,6 +1,7 @@
 <?php namespace Arcanedev\LaravelImpersonator\Traits;
 
 use Arcanedev\LaravelImpersonator\Contracts\Impersonatable;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Trait     HasImpersonation
@@ -65,5 +66,21 @@ trait CanImpersonate
     public function isImpersonated()
     {
         return impersonator()->isImpersonating();
+    }
+
+    /**
+     * Check if the two persons are the same.
+     *
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed  $impersonated
+     *
+     * @return bool
+     */
+    public function isSamePerson($impersonated)
+    {
+        if ($this instanceof Model && $impersonated instanceof Model) {
+            return $this->is($impersonated);
+        }
+
+        return $this->getAuthIdentifier() == $impersonated->getAuthIdentifier();
     }
 }
