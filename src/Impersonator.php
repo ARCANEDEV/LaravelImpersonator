@@ -249,8 +249,9 @@ class Impersonator implements Contracts\Impersonator
      */
     private function mustBeDifferentImpersonatable(Impersonatable $impersonater, Impersonatable $impersonated): void
     {
-        if ($impersonater->getAuthIdentifier() == $impersonated->getAuthIdentifier())
-            throw ImpersonationException::selfImpersonation();
+        if ($impersonater->isSamePerson($impersonated)) {
+            throw Exceptions\ImpersonationException::impersonaterAndImpersonatedAreSame();
+        }
     }
 
     /**

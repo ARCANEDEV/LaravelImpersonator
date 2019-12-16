@@ -56,4 +56,13 @@ interface Impersonatable extends Authenticatable
      * @return bool
      */
     public function isImpersonated();
+
+    /**
+     * Check if the two persons are the same.
+     *
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed  $impersonated
+     *
+     * @return bool
+     */
+    public function isSamePerson($impersonated);
 }
