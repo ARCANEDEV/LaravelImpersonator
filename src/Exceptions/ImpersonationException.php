@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelImpersonator\Exceptions;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelImpersonator\Exceptions;
 
 use Arcanedev\LaravelImpersonator\Contracts\Impersonatable;
 
@@ -61,7 +65,7 @@ class ImpersonationException extends \Exception
      *
      * @return static
      */
-    public static function cannotBeImpersonated(Impersonatable $impersonated)
+    public static function cannotBeImpersonated(Impersonatable $impersonated): self
     {
         return static::make(
             __('The impersonated with `:impersonated_name`=[:impersonated_id] cannot be impersonated.', [
@@ -76,7 +80,7 @@ class ImpersonationException extends \Exception
      *
      * @return static
      */
-    public static function impersonaterAndImpersonatedAreSame()
+    public static function impersonaterAndImpersonatedAreSame(): self
     {
         return static::make(
             __('The impersonater & impersonated with must be different.')

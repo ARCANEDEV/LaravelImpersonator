@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelImpersonator\Contracts;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelImpersonator\Contracts;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 

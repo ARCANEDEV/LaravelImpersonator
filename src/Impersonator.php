@@ -1,6 +1,11 @@
-<?php namespace Arcanedev\LaravelImpersonator;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelImpersonator;
 
 use Arcanedev\LaravelImpersonator\Contracts\Impersonatable;
+use Arcanedev\LaravelImpersonator\Contracts\Impersonator as ImpersonatorContract;
 use Arcanedev\LaravelImpersonator\Exceptions\ImpersonationException;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -11,7 +16,7 @@ use Illuminate\Contracts\Foundation\Application;
  * @package  Arcanedev\LaravelImpersonator
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class Impersonator implements Contracts\Impersonator
+class Impersonator implements ImpersonatorContract
 {
     /* -----------------------------------------------------------------
      |  Properties
@@ -183,7 +188,7 @@ class Impersonator implements Contracts\Impersonator
     }
 
     /* -----------------------------------------------------------------
-     |  Check Functions
+     |  Check Methods
      | -----------------------------------------------------------------
      */
 
@@ -276,7 +281,6 @@ class Impersonator implements Contracts\Impersonator
      */
     private function checkImpersonated(Impersonatable $impersonated): void
     {
-
         if ( ! $impersonated->canBeImpersonated())
             throw ImpersonationException::cannotBeImpersonated($impersonated);
     }

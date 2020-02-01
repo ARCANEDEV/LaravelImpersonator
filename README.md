@@ -1,6 +1,6 @@
 # LaravelImpersonator [![Packagist License][badge_license]](LICENSE.md) [![For Laravel][badge_laravel]][link-github-repo]
 
-[![Travis Status][badge_build]][link-travis]
+[![Github Workflow Status][badge_build]][link-github-status]
 [![Coverage Status][badge_coverage]][link-scrutinizer]
 [![Scrutinizer Code Quality][badge_quality]][link-scrutinizer]
 [![SensioLabs Insight][badge_insight]][link-insight]
@@ -45,7 +45,7 @@ Any ideas are welcome. Feel free to submit any issues or pull requests, please c
 
 [badge_license]:   https://img.shields.io/packagist/l/arcanedev/laravel-impersonator.svg?style=flat-square
 [badge_laravel]:   https://img.shields.io/badge/Laravel-5.4%20to%206.x-orange.svg?style=flat-square
-[badge_build]:     https://img.shields.io/travis/ARCANEDEV/LaravelImpersonator.svg?style=flat-square
+[badge_build]:     https://img.shields.io/github/workflow/status/ARCANEDEV/LaravelImpersonator/run-tests?style=flat-square
 [badge_coverage]:  https://img.shields.io/scrutinizer/coverage/g/ARCANEDEV/LaravelImpersonator.svg?style=flat-square
 [badge_quality]:   https://img.shields.io/scrutinizer/g/ARCANEDEV/LaravelImpersonator.svg?style=flat-square
 [badge_insight]:   https://img.shields.io/sensiolabs/i/a9bfffe8-8d21-434c-a1cc-07bbbee97cb7.svg?style=flat-square
@@ -56,9 +56,9 @@ Any ideas are welcome. Feel free to submit any issues or pull requests, please c
 
 [link-author]:        https://github.com/arcanedev-maroc
 [link-github-repo]:   https://github.com/ARCANEDEV/LaravelImpersonator
+[link-github-status]: https://github.com/ARCANEDEV/LaravelImpersonator/actions
 [link-github-issues]: https://github.com/ARCANEDEV/LaravelImpersonator/issues
 [link-contributors]:  https://github.com/ARCANEDEV/LaravelImpersonator/graphs/contributors
 [link-packagist]:     https://packagist.org/packages/arcanedev/laravel-impersonator
-[link-travis]:        https://travis-ci.org/ARCANEDEV/LaravelImpersonator
 [link-scrutinizer]:   https://scrutinizer-ci.com/g/ARCANEDEV/LaravelImpersonator/?branch=master
 [link-insight]:       https://insight.sensiolabs.com/projects/a9bfffe8-8d21-434c-a1cc-07bbbee97cb7

@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelImpersonator\Tests\Stubs\Models;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelImpersonator\Tests\Stubs\Models;
 
 use Arcanedev\LaravelImpersonator\Contracts\Impersonatable;
 use Arcanedev\LaravelImpersonator\Traits\CanImpersonate;
