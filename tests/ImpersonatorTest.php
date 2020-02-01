@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelImpersonator\Tests;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelImpersonator\Tests;
 
 use Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User;
 use Arcanedev\LaravelImpersonator\Contracts\Impersonator as ImpersonatorContract;

@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelImpersonator\Tests\Stubs\Controllers;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelImpersonator\Tests\Stubs\Controllers;
 
 use Arcanedev\LaravelImpersonator\Contracts\Impersonator;
 use Arcanedev\LaravelImpersonator\Policies\ImpersonationPolicy;

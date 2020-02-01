@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelImpersonator\Events;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelImpersonator\Events;
 
 /**
  * Class     ImpersonationEnded

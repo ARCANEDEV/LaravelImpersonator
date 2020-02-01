@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelImpersonator;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelImpersonator;
 
 use Arcanedev\Support\Providers\PackageServiceProvider;
 use Illuminate\Auth\SessionGuard as IlluminateSessionGuard;

@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelImpersonator\Providers;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelImpersonator\Providers;
 
 use Arcanedev\LaravelImpersonator\Policies\ImpersonationPolicy;
 use Arcanedev\Support\Providers\AuthorizationServiceProvider as ServiceProvider;

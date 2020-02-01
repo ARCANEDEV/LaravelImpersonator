@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelImpersonator\Traits;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelImpersonator\Traits;
 
 use Arcanedev\LaravelImpersonator\Contracts\Impersonatable;
 use Illuminate\Database\Eloquent\Model;

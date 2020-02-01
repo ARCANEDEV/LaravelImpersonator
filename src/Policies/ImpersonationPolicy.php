@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelImpersonator\Policies;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelImpersonator\Policies;
 
 use Arcanedev\LaravelImpersonator\Contracts\Impersonatable;
 use Arcanedev\Support\Bases\Policy;

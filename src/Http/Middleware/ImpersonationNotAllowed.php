@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelImpersonator\Http\Middleware;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelImpersonator\Http\Middleware;
 
 use Arcanedev\LaravelImpersonator\Contracts\Impersonator;
 use Closure;

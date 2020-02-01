@@ -1,4 +1,8 @@
-<?php namespace Arcanedev\LaravelImpersonator\Tests;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanedev\LaravelImpersonator\Tests;
 
 use Symfony\Component\HttpFoundation\Response;
 
