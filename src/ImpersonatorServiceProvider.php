@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Arcanedev\LaravelImpersonator;
 
+use Arcanedev\LaravelImpersonator\Contracts\Impersonator as ImpersonatorContract;
+use Arcanedev\LaravelImpersonator\Providers\AuthorizationServiceProvider;
 use Arcanedev\Support\Providers\PackageServiceProvider;
 use Illuminate\Auth\SessionGuard as IlluminateSessionGuard;
 use Illuminate\Contracts\Foundation\Application;
@@ -43,9 +45,9 @@ class ImpersonatorServiceProvider extends PackageServiceProvider implements Defe
 
         $this->registerConfig();
 
-        $this->registerProvider(Providers\AuthorizationServiceProvider::class);
+        $this->registerProvider(AuthorizationServiceProvider::class);
 
-        $this->singleton(Contracts\Impersonator::class, Impersonator::class);
+        $this->singleton(ImpersonatorContract::class, Impersonator::class);
         $this->extendAuthDriver();
     }
 
@@ -54,7 +56,9 @@ class ImpersonatorServiceProvider extends PackageServiceProvider implements Defe
      */
     public function boot(): void
     {
-        $this->publishConfig();
+        if ($this->app->runningInConsole()) {
+            $this->publishConfig();
+        }
     }
 
     /**
@@ -65,7 +69,7 @@ class ImpersonatorServiceProvider extends PackageServiceProvider implements Defe
     public function provides(): array
     {
         return [
-            Contracts\Impersonator::class,
+            ImpersonatorContract::class,
         ];
     }
 
