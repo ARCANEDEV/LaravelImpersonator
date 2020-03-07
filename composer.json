@@ -16,12 +16,13 @@
     "type":    "library",
     "license": "MIT",
     "require": {
-        "php":                  "^7.2.5",
-        "arcanedev/support":    "^7.0"
+        "php":               "^7.2.5",
+        "arcanedev/support": "^7.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^5.0",
-        "phpunit/phpunit":     "^8.5|^9.0"
+        "arcanedev/laravel-policies": "^2.0",
+        "orchestra/testbench":        "^5.0",
+        "phpunit/phpunit":            "^8.5|^9.0"
     },
     "autoload": {
         "psr-4": {

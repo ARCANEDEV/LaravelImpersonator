@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Arcanedev\LaravelImpersonator\Tests;
 
+use Arcanedev\LaravelPolicies\PoliciesServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 /**
@@ -44,7 +45,9 @@ abstract class TestCase extends BaseTestCase
     protected function getPackageProviders($app)
     {
         return [
+            \Arcanedev\LaravelPolicies\PoliciesServiceProvider::class,
             \Arcanedev\LaravelImpersonator\ImpersonatorServiceProvider::class,
+            \Arcanedev\LaravelImpersonator\Tests\Stubs\Providers\AuthorizationServiceProvider::class,
         ];
     }
 

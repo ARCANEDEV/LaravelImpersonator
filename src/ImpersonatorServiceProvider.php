@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Arcanedev\LaravelImpersonator;
 
 use Arcanedev\LaravelImpersonator\Contracts\Impersonator as ImpersonatorContract;
-use Arcanedev\LaravelImpersonator\Providers\AuthorizationServiceProvider;
 use Arcanedev\Support\Providers\PackageServiceProvider;
 use Illuminate\Auth\SessionGuard as IlluminateSessionGuard;
 use Illuminate\Contracts\Foundation\Application;
@@ -44,8 +43,6 @@ class ImpersonatorServiceProvider extends PackageServiceProvider implements Defe
         parent::register();
 
         $this->registerConfig();
-
-        $this->registerProvider(AuthorizationServiceProvider::class);
 
         $this->singleton(ImpersonatorContract::class, Impersonator::class);
         $this->extendAuthDriver();

@@ -7,7 +7,7 @@ namespace Arcanedev\LaravelImpersonator\Tests\Stubs\Controllers;
 use Arcanedev\LaravelImpersonator\Contracts\Impersonator;
 use Arcanedev\LaravelImpersonator\Policies\ImpersonationPolicy;
 use Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User;
-use Arcanedev\Support\Http\Controller;
+use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 /**
@@ -45,8 +45,6 @@ class ImpersonatorController extends Controller
      */
     public function __construct(Impersonator $impersonator)
     {
-        parent::__construct();
-
         $this->middleware('auth');
 
         $this->impersonator = $impersonator;
@@ -59,9 +57,9 @@ class ImpersonatorController extends Controller
 
     public function start($id)
     {
-        $impersonated = User::findOrFail($id);
+        $impersonated = User::query()->findOrFail($id);
 
-        $this->authorize(ImpersonationPolicy::CAN_BE_IMPERSONATED, [$impersonated]);
+        $this->authorize(ImpersonationPolicy::ability('can-be-impersonated'), [$impersonated]);
 
         return $this->impersonator->start(auth()->user(), $impersonated)
             ? 'Impersonation started'
