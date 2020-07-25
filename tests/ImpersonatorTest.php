@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Arcanedev\LaravelImpersonator\Tests;
 
-use Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User;
 use Arcanedev\LaravelImpersonator\Contracts\Impersonator as ImpersonatorContract;
+use Arcanedev\LaravelImpersonator\Exceptions\ImpersonationException;
+use Arcanedev\LaravelImpersonator\Impersonator;
 
 /**
  * Class     ImpersonatorTest
@@ -48,11 +49,11 @@ class ImpersonatorTest extends TestCase
      */
 
     /** @test */
-    public function it_can_be_instantiated()
+    public function it_can_be_instantiated(): void
     {
         $expectations = [
             ImpersonatorContract::class,
-            \Arcanedev\LaravelImpersonator\Impersonator::class,
+            Impersonator::class,
         ];
 
         foreach ($expectations as $expected) {
@@ -61,13 +62,13 @@ class ImpersonatorTest extends TestCase
     }
 
     /** @test */
-    public function it_can_be_instantiated_with_helper()
+    public function it_can_be_instantiated_with_helper(): void
     {
         $impersonator = impersonator();
 
         $expectations = [
             ImpersonatorContract::class,
-            \Arcanedev\LaravelImpersonator\Impersonator::class,
+            Impersonator::class,
         ];
 
         foreach ($expectations as $expected) {
@@ -76,33 +77,20 @@ class ImpersonatorTest extends TestCase
     }
 
     /** @test */
-    public function it_can_find_a_user()
-    {
-        /** @var \Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User  $admin */
-        $admin = $this->impersonator->findUserById(1);
-        /** @var \Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User  $user */
-        $user  = $this->impersonator->findUserById(2);
-
-        static::assertInstanceOf(User::class, $admin);
-        static::assertInstanceOf(User::class, $user);
-
-        static::assertSame('Admin 1',  $admin->name);
-        static::assertSame('User 1', $user->name);
-    }
-
-    /** @test */
-    public function it_can_check_is_impersonating()
+    public function it_can_check_is_impersonating(): void
     {
         static::assertFalse($this->impersonator->isImpersonating());
 
         $this->app['session']->put($this->impersonator->getSessionKey(), 1);
+        $this->app['session']->put($this->impersonator->getSessionGuard(), 'custom');
 
         static::assertTrue($this->impersonator->isImpersonating());
         static::assertSame(1, $this->impersonator->getImpersonatorId());
+        static::assertSame('custom', $this->impersonator->getImpersonatorGuard());
     }
 
     /** @test */
-    public function it_can_clear_impersonating()
+    public function it_can_clear_impersonating(): void
     {
         $this->app['session']->put($this->impersonator->getSessionKey(), 1);
 
@@ -114,55 +102,51 @@ class ImpersonatorTest extends TestCase
     }
 
     /** @test */
-    public function it_can_start_impersonation()
+    public function it_can_start_impersonation(): void
     {
-        $this->loginWithId(1);
+        $impersonator = $this->loginWithId($impersonatorId = 1);
 
         static::assertIsLoggedIn();
 
-        $this->impersonator->start(
-            $this->getAuthenticatedUser(),
-            $this->impersonator->findUserById(2)
-        );
+        $impersonated = $this->getUserById($impersonatedId = 2);
 
-        static::assertSame(2, $this->getAuthenticatedUser()->getKey());
-        static::assertSame(1, $this->impersonator->getImpersonatorId());
+        $this->impersonator->start($impersonator, $impersonated);
+
+        static::assertSame($impersonatedId, $this->getAuthenticatedUser()->getKey());
+        static::assertSame($impersonatorId, $this->impersonator->getImpersonatorId());
         static::assertTrue($this->impersonator->isImpersonating());
     }
 
     /** @test */
-    public function it_can_stop_impersonation()
+    public function it_can_stop_impersonation(): void
     {
-        $this->loginWithId(1);
+        $this->loginWithId($impersonatorId = 1);
 
-        $this->impersonator->start(
-            $this->getAuthenticatedUser(),
-            $this->impersonator->findUserById(2)
-        );
+        $impersonated = $this->getUserById($impersonatedId = 2);
+
+        $this->impersonator->start($this->getAuthenticatedUser(), $impersonated);
 
         static::assertIsLoggedIn();
         static::assertTrue($this->impersonator->isImpersonating());
-        static::assertSame(2, $this->getAuthenticatedUser()->getKey());
+        static::assertSame($impersonatedId, $this->getAuthenticatedUser()->getKey());
 
         static::assertTrue($this->impersonator->stop());
 
         static::assertIsLoggedIn();
         static::assertFalse($this->impersonator->isImpersonating());
-        static::assertSame(1, $this->getAuthenticatedUser()->getKey());
+        static::assertSame($impersonatorId, $this->getAuthenticatedUser()->getKey());
     }
 
     /** @test */
-    public function it_must_preserve_the_remember_token_when_starting_and_stopping_impersonation()
+    public function it_must_preserve_the_remember_token_when_starting_and_stopping_impersonation(): void
     {
         /** @var  \Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User  $admin */
-        $admin = $this->impersonator->findUserById(1);
-        $admin->remember_token = 'impersonator_token';
-        $admin->save();
+        $admin = $this->getUserById(1);
+        $admin->forceFill(['remember_token' => 'impersonator_token'])->save();
 
         /** @var  \Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User  $user */
-        $user = $this->impersonator->findUserById(2);
-        $user->remember_token = 'impersonated_token';
-        $user->save();
+        $user = $this->getUserById(2);
+        $user->forceFill(['remember_token' => 'impersonated_token'])->save();
 
         $admin->impersonate($user);
         $user->stopImpersonation();
@@ -175,51 +159,51 @@ class ImpersonatorTest extends TestCase
     }
 
     /** @test */
-    public function it_must_throw_exception_if_impersonater_cannot_impersonate()
+    public function it_must_throw_exception_if_impersonater_cannot_impersonate(): void
     {
-        $this->expectException(\Arcanedev\LaravelImpersonator\Exceptions\ImpersonationException::class);
+        $this->expectException(ImpersonationException::class);
         $this->expectExceptionMessage('The impersonater with `id`=[2] doesn\'t have the ability to impersonate.');
 
         $this->loginWithId(2);
 
         $this->impersonator->start(
             $this->getAuthenticatedUser(),
-            $this->impersonator->findUserById(3)
+            $this->getUserById(3)
         );
     }
 
     /** @test */
-    public function it_must_throw_exception_if_impersonater_and_impersonated_are_same()
+    public function it_must_throw_exception_if_impersonater_and_impersonated_are_same(): void
     {
-        $this->expectException(\Arcanedev\LaravelImpersonator\Exceptions\ImpersonationException::class);
+        $this->expectException(ImpersonationException::class);
         $this->expectExceptionMessage('The impersonater & impersonated with must be different.');
 
         $this->loginWithId(1);
 
         $this->impersonator->start(
             $this->getAuthenticatedUser(),
-            $this->impersonator->findUserById(1)
+            $this->getUserById(1)
         );
     }
 
     /** @test */
-    public function it_must_throw_exception_if_impersonated_cannot_be_impersonated() // WHAT ??
+    public function it_must_throw_exception_if_impersonated_cannot_be_impersonated(): void // WHAT ??
     {
-        $this->expectException(\Arcanedev\LaravelImpersonator\Exceptions\ImpersonationException::class);
+        $this->expectException(ImpersonationException::class);
         $this->expectExceptionMessage('The impersonated with `id`=[4] cannot be impersonated.');
 
         $this->loginWithId(1);
 
         $this->impersonator->start(
             $this->getAuthenticatedUser(),
-            $this->impersonator->findUserById(4)
+            $this->getUserById(4)
         );
     }
 
     /** @test */
-    public function it_must_throw_exception_if_impersonater_is_disabled()
+    public function it_must_throw_exception_if_impersonater_is_disabled(): void
     {
-        $this->expectException(\Arcanedev\LaravelImpersonator\Exceptions\ImpersonationException::class);
+        $this->expectException(ImpersonationException::class);
         $this->expectExceptionMessage('The impersonation is disabled.');
 
         $this->disableImpersonations();
@@ -228,12 +212,12 @@ class ImpersonatorTest extends TestCase
 
         $this->impersonator->start(
             $this->getAuthenticatedUser(),
-            $this->impersonator->findUserById(2)
+            $this->getUserById(2)
         );
     }
 
     /** @test */
-    public function it_must_return_false_if_not_in_impersonating_mode()
+    public function it_must_return_false_if_not_in_impersonating_mode(): void
     {
         static::assertFalse($this->impersonator->stop());
     }

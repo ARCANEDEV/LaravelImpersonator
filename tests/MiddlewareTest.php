@@ -18,7 +18,7 @@ class MiddlewareTest extends TestCase
      */
 
     /** @test */
-    public function it_can_block_the_access_to_secured_routes_while_impersonating()
+    public function it_can_block_the_access_to_secured_routes_while_impersonating(): void
     {
         $this->loginWithId(1);
 

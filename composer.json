@@ -22,7 +22,7 @@
     "require-dev": {
         "arcanedev/laravel-policies": "^2.0",
         "orchestra/testbench":        "^5.0",
-        "phpunit/phpunit":            "^8.5|^9.0"
+        "phpunit/phpunit":            "^8.5"
     },
     "autoload": {
         "psr-4": {

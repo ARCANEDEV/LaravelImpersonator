@@ -15,7 +15,8 @@ return [
      */
 
     'session' => [
-        'key' => 'impersonator_id',
+        'key'   => 'impersonator_id',
+        'guard' => 'impersonator_guard',
     ],
 
 ];

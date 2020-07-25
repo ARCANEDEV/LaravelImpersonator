@@ -20,7 +20,7 @@ class ImpersonationPoliciesTest extends TestCase
      */
 
     /** @test */
-    public function it_can_allow_access_to_impersonator()
+    public function it_can_allow_access_to_impersonator(): void
     {
         $this->loginWithId(1);
 
@@ -31,7 +31,7 @@ class ImpersonationPoliciesTest extends TestCase
     }
 
     /** @test */
-    public function it_can_deny_access_to_impersonator()
+    public function it_can_deny_access_to_impersonator(): void
     {
         $this->loginWithId(2);
 
@@ -40,7 +40,7 @@ class ImpersonationPoliciesTest extends TestCase
     }
 
     /** @test */
-    public function it_can_deny_access_if_impersonated_can_not_be_impersonated()
+    public function it_can_deny_access_if_impersonated_can_not_be_impersonated(): void
     {
         $this->loginWithId(1);
 
@@ -49,7 +49,7 @@ class ImpersonationPoliciesTest extends TestCase
     }
 
     /** @test */
-    public function it_can_stop_ongoing_impersonation()
+    public function it_can_stop_ongoing_impersonation(): void
     {
         $this->loginWithId(1);
 
@@ -65,7 +65,7 @@ class ImpersonationPoliciesTest extends TestCase
     }
 
     /** @test */
-    public function it_can_redirect_if_impersonation_not_started()
+    public function it_can_redirect_if_impersonation_not_started(): void
     {
         $this->loginWithId(1);
 
@@ -74,7 +74,7 @@ class ImpersonationPoliciesTest extends TestCase
     }
 
     /** @test */
-    public function it_can_deny_access_if_impersonation_is_disabled()
+    public function it_can_deny_access_if_impersonation_is_disabled(): void
     {
         $this->disableImpersonations();
 

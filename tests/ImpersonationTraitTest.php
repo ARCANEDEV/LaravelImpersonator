@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Arcanedev\LaravelImpersonator\Tests;
 
+use Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User;
+
 /**
  * Class     ImpersonationTraitTest
  *
@@ -18,7 +20,7 @@ class ImpersonationTraitTest extends TestCase
      */
 
     /** @test */
-    public function it_can_impersonate()
+    public function it_can_impersonate(): void
     {
         $admin = $this->loginWithId(1);
 
@@ -26,7 +28,7 @@ class ImpersonationTraitTest extends TestCase
     }
 
     /** @test */
-    public function it_can_not_impersonate()
+    public function it_can_not_impersonate(): void
     {
         $user = $this->loginWithId(2);
 
@@ -34,7 +36,7 @@ class ImpersonationTraitTest extends TestCase
     }
 
     /** @test */
-    public function it_can_be_impersonated()
+    public function it_can_be_impersonated(): void
     {
         $user = $this->loginWithId(2);
 
@@ -42,7 +44,7 @@ class ImpersonationTraitTest extends TestCase
     }
 
     /** @test */
-    public function it_can_not_be_impersonated()
+    public function it_can_not_be_impersonated(): void
     {
         $admin = $this->loginWithId(1);
 
@@ -50,7 +52,7 @@ class ImpersonationTraitTest extends TestCase
     }
 
     /** @test */
-    public function it_can_start_and_stop_the_impersonation()
+    public function it_can_start_and_stop_the_impersonation(): void
     {
         /** @var \Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User $admin */
         $admin = $this->loginWithId(1);
@@ -58,7 +60,7 @@ class ImpersonationTraitTest extends TestCase
         static::assertFalse($admin->isImpersonated());
 
         /** @var \Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User $user */
-        $user = $this->impersonator()->findUserById(2);
+        $user = User::query()->findOrFail(2);
 
         $admin->impersonate($user);
 

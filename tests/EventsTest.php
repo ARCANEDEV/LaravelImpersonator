@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Arcanedev\LaravelImpersonator\Tests;
 
-use Arcanedev\LaravelImpersonator\Events\ImpersonationStopped;
-use Arcanedev\LaravelImpersonator\Events\ImpersonationStarted;
-use Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User;
-use Illuminate\Auth\Events\Login;
-use Illuminate\Auth\Events\Logout;
+use Arcanedev\LaravelImpersonator\Events\{ImpersonationStarted, ImpersonationStopped};
+use Illuminate\Auth\Events\{Login, Logout};
 use Illuminate\Support\Facades\Event;
 
 /**
@@ -37,10 +34,10 @@ class EventsTest extends TestCase
      */
 
     /** @test */
-    public function it_must_dispatches_events_when_starting_and_stopping_impersonations()
+    public function it_must_dispatches_events_when_starting_and_stopping_impersonations(): void
     {
         $admin = $this->getAdminUser();
-        $user  = $this->getRegularUSer();
+        $user  = $this->getRegularUser();
 
         static::assertTrue($admin->impersonate($user));
         static::assertTrue($user->stopImpersonation());
@@ -50,6 +47,35 @@ class EventsTest extends TestCase
 
         static::assertImpersonationStoppedEventDispatched($admin, $user);
         static::assertLogoutEventNotDispatched();
+    }
+
+    /* -----------------------------------------------------------------
+     |  Custom Assertions
+     | -----------------------------------------------------------------
+     */
+
+    protected static function assertLoginEventNotDispatched(): void
+    {
+        Event::assertNotDispatched(Login::class);
+    }
+
+    private static function assertLogoutEventNotDispatched(): void
+    {
+        Event::assertNotDispatched(Logout::class);
+    }
+
+    protected static function assertImpersonationStartedEventDispatched($impersonater, $impersonated): void
+    {
+        Event::assertDispatched(ImpersonationStarted::class, function ($event) use ($impersonater, $impersonated) {
+            return $event->impersonater->id == $impersonater->id && $event->impersonated->id == $impersonated->id;
+        });
+    }
+
+    protected static function assertImpersonationStoppedEventDispatched($impersonater, $impersonated)
+    {
+        Event::assertDispatched(ImpersonationStopped::class, function ($event) use ($impersonater, $impersonated) {
+            return $event->impersonater->id == $impersonater->id && $event->impersonated->id == $impersonated->id;
+        });
     }
 
     /* -----------------------------------------------------------------
@@ -64,7 +90,7 @@ class EventsTest extends TestCase
      */
     protected function getAdminUser()
     {
-        return User::query()->find(1);
+        return $this->getUserById(1);
     }
 
     /**
@@ -72,32 +98,8 @@ class EventsTest extends TestCase
      *
      * @return \Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User|mixed
      */
-    protected function getRegularUSer()
+    protected function getRegularUser()
     {
-        return User::query()->find(2);
-    }
-
-    protected static function assertLoginEventNotDispatched()
-    {
-        Event::assertNotDispatched(Login::class);
-    }
-
-    private static function assertLogoutEventNotDispatched()
-    {
-        Event::assertNotDispatched(Logout::class);
-    }
-
-    protected static function assertImpersonationStartedEventDispatched($impersonater, $impersonated)
-    {
-        Event::assertDispatched(ImpersonationStarted::class, function ($event) use ($impersonater, $impersonated) {
-            return $event->impersonater->id == $impersonater->id && $event->impersonated->id == $impersonated->id;
-        });
-    }
-
-    protected static function assertImpersonationStoppedEventDispatched($impersonater, $impersonated)
-    {
-        Event::assertDispatched(ImpersonationStopped::class, function ($event) use ($impersonater, $impersonated) {
-            return $event->impersonater->id == $impersonater->id && $event->impersonated->id == $impersonated->id;
-        });
+        return $this->getUserById(2);
     }
 }
