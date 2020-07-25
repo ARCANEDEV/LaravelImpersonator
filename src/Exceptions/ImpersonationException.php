@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Arcanedev\LaravelImpersonator\Exceptions;
 
 use Arcanedev\LaravelImpersonator\Contracts\Impersonatable;
+use Exception;
 
 /**
  * Class     ImpersonationException
@@ -12,7 +13,7 @@ use Arcanedev\LaravelImpersonator\Contracts\Impersonatable;
  * @package  Arcanedev\LaravelImpersonator\Exceptions
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class ImpersonationException extends \Exception
+class ImpersonationException extends Exception
 {
     /* -----------------------------------------------------------------
      |  Main Methods

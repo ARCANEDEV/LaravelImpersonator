@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Arcanedev\LaravelImpersonator\Tests;
 
+use Arcanedev\LaravelImpersonator\Contracts\Impersonator as ImpersonatorContract;
+use Arcanedev\LaravelImpersonator\Http\Middleware\ImpersonationNotAllowed;
+use Arcanedev\LaravelImpersonator\ImpersonatorServiceProvider;
+use Arcanedev\LaravelImpersonator\Tests\Stubs\Controllers\ImpersonatorController;
+use Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User;
+use Arcanedev\LaravelImpersonator\Tests\Stubs\Providers\AuthorizationServiceProvider;
 use Arcanedev\LaravelPolicies\PoliciesServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
@@ -42,12 +48,12 @@ abstract class TestCase extends BaseTestCase
      *
      * @return array
      */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
-            \Arcanedev\LaravelPolicies\PoliciesServiceProvider::class,
-            \Arcanedev\LaravelImpersonator\ImpersonatorServiceProvider::class,
-            \Arcanedev\LaravelImpersonator\Tests\Stubs\Providers\AuthorizationServiceProvider::class,
+            PoliciesServiceProvider::class,
+            ImpersonatorServiceProvider::class,
+            AuthorizationServiceProvider::class,
         ];
     }
 
@@ -55,10 +61,8 @@ abstract class TestCase extends BaseTestCase
      * Define environment setup.
      *
      * @param  \Illuminate\Foundation\Application  $app
-     *
-     * @return void
      */
-    protected function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app): void
     {
         $app['config']->set('app.debug', true);
         $app['config']->set('auth.providers.users.model', Stubs\Models\User::class);
@@ -74,17 +78,17 @@ abstract class TestCase extends BaseTestCase
     /**
      * Get the impersonator instance.
      *
-     * @return \Arcanedev\LaravelImpersonator\Contracts\Impersonator::class
+     * @return \Arcanedev\LaravelImpersonator\Contracts\Impersonator
      */
-    protected function impersonator()
+    protected function impersonator(): ImpersonatorContract
     {
-        return $this->app[\Arcanedev\LaravelImpersonator\Contracts\Impersonator::class];
+        return $this->app[ImpersonatorContract::class];
     }
 
     /**
      * Disable the impersonations.
      */
-    protected function disableImpersonations()
+    protected function disableImpersonations(): void
     {
         $this->app['config']->set('impersonator.enabled', false);
     }
@@ -114,44 +118,44 @@ abstract class TestCase extends BaseTestCase
     /**
      * Check if the user is logged in.
      */
-    protected function assertIsLoggedIn()
+    protected function assertIsLoggedIn(): void
     {
         static::assertTrue($this->app['auth']->check());
     }
 
     /**
+     * Get a user by the given id.
+     *
+     * @param  int  $id
+     *
+     * @return \Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User|mixed
+     */
+    protected function getUserById(int $id)
+    {
+        return User::query()->findOrFail($id);
+    }
+
+    /**
+     * Setup the routes.
+     *
      * @param  \Illuminate\Routing\Router  $router
      */
-    private function setUpRoutes($router)
+    private function setUpRoutes($router): void
     {
-        $router->aliasMiddleware(
-            'no-impersonations',
-            \Arcanedev\LaravelImpersonator\Http\Middleware\ImpersonationNotAllowed::class
-        );
+        $router->aliasMiddleware('no-impersonations', ImpersonationNotAllowed::class);
 
-        $router->group([
-            'namespace'  => 'Arcanedev\LaravelImpersonator\Tests\Stubs\Controllers',
-            'as'         => 'auth::impersonator.',
-            'middleware' => 'web',
-        ], function () use ($router) {
-            $router->get('start/{id}', [
-                'uses' => 'ImpersonatorController@start',
-                'as'   => 'start', // auth::impersonator.start
-            ]);
+        $router->name('auth::impersonator.')->middleware('web')->group(function () use ($router) {
+            $router->get('start/{id}', [ImpersonatorController::class, 'start'])
+                   ->name('start'); // auth::impersonator.start
 
-            $router->get('stop', [
-                'uses' => 'ImpersonatorController@stop',
-                'as'   => 'stop', // auth::impersonator.stop
-            ]);
+            $router->get('stop', [ImpersonatorController::class, 'stop'])
+                   ->name('stop'); // auth::impersonator.stop;
         });
 
-        $router->group(['middleware' => ['web', 'auth', 'no-impersonations']], function () use ($router) {
-            $router->get('dashboard', [
-                'as'   => 'admin::dashboard',
-                'uses' => function() {
-                    return 'Dashboard page';
-                }
-            ]);
+        $router->middleware(['web', 'auth', 'no-impersonations'])->group(function () use ($router) {
+            $router->get('dashboard', function() {
+                return 'Dashboard page';
+            })->name('admin::dashboard');
         });
     }
 }

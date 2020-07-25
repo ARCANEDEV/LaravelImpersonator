@@ -91,19 +91,40 @@ class Impersonator implements ImpersonatorContract
      *
      * @return string
      */
-    public function getSessionKey()
+    public function getSessionKey(): string
     {
         return $this->config()->get('impersonator.session.key', 'impersonator_id');
     }
 
     /**
+     * Get the session guard.
+     *
+     * @return string
+     */
+    public function getSessionGuard(): string
+    {
+        return $this->config()->get('impersonator.session.guard', 'impersonator_guard');
+    }
+
+    /**
      * Get the impersonator id.
      *
-     * @return  int|null
+     * @return int|null
      */
-    public function getImpersonatorId()
+    public function getImpersonatorId(): ?int
     {
         return $this->session()->get($this->getSessionKey(), null);
+    }
+
+    /**
+     * Get the impersonator guard.
+     *
+     * @return string|null
+     */
+    public function getImpersonatorGuard(): ?string
+    {
+        return $this->session()->get($this->getSessionGuard(), null)
+            ?: $this->auth()->getDefaultDriver();
     }
 
     /* -----------------------------------------------------------------
@@ -114,22 +135,25 @@ class Impersonator implements ImpersonatorContract
     /**
      * Start the impersonation.
      *
-     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed  $impersonater
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed  $impersonator
      * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed  $impersonated
+     * @param  string|null                                                    $guard
      *
      * @return bool
      */
-    public function start(Impersonatable $impersonater, Impersonatable $impersonated)
+    public function start(Impersonatable $impersonator, Impersonatable $impersonated, $guard = null): bool
     {
-        $this->checkImpersonation($impersonater, $impersonated);
+        $this->checkImpersonation($impersonator, $impersonated);
 
         try {
-            session()->put($this->getSessionKey(), $impersonater->getAuthIdentifier());
-            $this->auth()->silentLogout();
-            $this->auth()->silentLogin($impersonated);
+            $this->rememberImpersonater($impersonator);
+
+            $auth = $this->auth();
+            $auth->guard()->silentLogout();
+            $auth->guard($guard)->silentLogin($impersonated);
 
             $this->events()->dispatch(
-                new Events\ImpersonationStarted($impersonater, $impersonated)
+                new Events\ImpersonationStarted($impersonator, $impersonated)
             );
 
             return true;
@@ -144,18 +168,20 @@ class Impersonator implements ImpersonatorContract
      *
      * @return bool
      */
-    public function stop()
+    public function stop(): bool
     {
         try {
-            $impersonated = $this->auth()->user();
-            $impersonater = $this->findUserById($this->getImpersonatorId());
+            $auth = $this->auth();
 
-            $this->auth()->silentLogout();
-            $this->auth()->silentLogin($impersonater);
+            $impersonated = $auth->user();
+            $impersonator = $this->getImpersonatorFromSession();
+
+            $auth->silentLogout();
+            $auth->guard($this->getImpersonatorGuard())->silentLogin($impersonator);
             $this->clear();
 
             $this->events()->dispatch(
-                new Events\ImpersonationStopped($impersonater, $impersonated)
+                new Events\ImpersonationStopped($impersonator, $impersonated)
             );
 
             return true;
@@ -168,23 +194,31 @@ class Impersonator implements ImpersonatorContract
     /**
      * Clear the impersonation.
      */
-    public function clear()
+    public function clear(): void
     {
-        $this->session()->forget($this->getSessionKey());
+        $this->session()->forget([
+            $this->getSessionKey(),
+            $this->getSessionGuard(),
+        ]);
     }
 
     /**
-     * Find a user by the given id.
+     * Get the impersonator from session.
      *
-     * @param  int|string  $id
-     *
-     * @return \Arcanedev\LaravelImpersonator\Contracts\Impersonatable
+     * @return \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed|null
      *
      * @throws \Exception
      */
-    public function findUserById($id)
+    protected function getImpersonatorFromSession()
     {
-        return call_user_func([$this->config()->get('auth.providers.users.model'), 'findOrFail'], $id);
+        $user = $this->auth()
+            ->guard($this->getImpersonatorGuard())
+            ->getProvider()
+            ->retrieveById($this->getImpersonatorId());
+
+        abort_if(is_null($user), 404, 'User not found');
+
+        return $user;
     }
 
     /* -----------------------------------------------------------------
@@ -197,9 +231,12 @@ class Impersonator implements ImpersonatorContract
      *
      * @return bool
      */
-    public function isImpersonating()
+    public function isImpersonating(): bool
     {
-        return $this->session()->has($this->getSessionKey());
+        return $this->session()->has([
+            $this->getSessionKey(),
+            $this->getSessionGuard(),
+        ]);
     }
 
     /**
@@ -207,7 +244,7 @@ class Impersonator implements ImpersonatorContract
      *
      * @return bool
      */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
         return $this->config()->get('impersonator.enabled', false);
     }
@@ -220,14 +257,14 @@ class Impersonator implements ImpersonatorContract
     /**
      * Check the impersonation.
      *
-     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed  $impersonater
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed  $impersonator
      * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed  $impersonated
      */
-    private function checkImpersonation(Impersonatable $impersonater, Impersonatable $impersonated): void
+    private function checkImpersonation(Impersonatable $impersonator, Impersonatable $impersonated): void
     {
         $this->mustBeEnabled();
-        $this->mustBeDifferentImpersonatable($impersonater, $impersonated);
-        $this->checkImpersonater($impersonater);
+        $this->mustBeDifferentImpersonatable($impersonator, $impersonated);
+        $this->checkImpersonater($impersonator);
         $this->checkImpersonated($impersonated);
     }
 
@@ -245,31 +282,31 @@ class Impersonator implements ImpersonatorContract
     }
 
     /**
-     * Check the impersonater and the impersonated are different.
+     * Check the impersonator and the impersonated are different.
      *
-     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed  $impersonater
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed  $impersonator
      * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed  $impersonated
      *
      * @throws \Arcanedev\LaravelImpersonator\Exceptions\ImpersonationException
      */
-    private function mustBeDifferentImpersonatable(Impersonatable $impersonater, Impersonatable $impersonated): void
+    private function mustBeDifferentImpersonatable(Impersonatable $impersonator, Impersonatable $impersonated): void
     {
-        if ($impersonater->isSamePerson($impersonated)) {
-            throw Exceptions\ImpersonationException::impersonaterAndImpersonatedAreSame();
+        if ($impersonator->isSamePerson($impersonated)) {
+            throw Exceptions\ImpersonationException::selfImpersonation();
         }
     }
 
     /**
-     * Check the impersonater.
+     * Check the impersonator.
      *
-     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed  $impersonater
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed  $impersonator
      *
      * @throws \Arcanedev\LaravelImpersonator\Exceptions\ImpersonationException
      */
-    private function checkImpersonater(Impersonatable $impersonater): void
+    private function checkImpersonater(Impersonatable $impersonator): void
     {
-        if ( ! $impersonater->canImpersonate())
-            throw ImpersonationException::cannotImpersonate($impersonater);
+        if ( ! $impersonator->canImpersonate())
+            throw ImpersonationException::cannotImpersonate($impersonator);
     }
 
     /**
@@ -283,5 +320,18 @@ class Impersonator implements ImpersonatorContract
     {
         if ( ! $impersonated->canBeImpersonated())
             throw ImpersonationException::cannotBeImpersonated($impersonated);
+    }
+
+    /**
+     * Remember the impersonator.
+     *
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $impersonator
+     */
+    private function rememberImpersonater(Impersonatable $impersonator)
+    {
+        $this->session()->put([
+            $this->getSessionKey()   => $impersonator->getAuthIdentifier(),
+            $this->getSessionGuard() => $this->auth()->getDefaultDriver(),
+        ]);
     }
 }

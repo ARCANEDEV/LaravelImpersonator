@@ -22,14 +22,28 @@ interface Impersonator
      *
      * @return string
      */
-    public function getSessionKey();
+    public function getSessionKey(): string;
+
+    /**
+     * Get the session guard.
+     *
+     * @return string
+     */
+    public function getSessionGuard(): string;
 
     /**
      * Get the impersonator id.
      *
      * @return  int|null
      */
-    public function getImpersonatorId();
+    public function getImpersonatorId(): ?int;
+
+    /**
+     * Get the impersonator guard.
+     *
+     * @return string|null
+     */
+    public function getImpersonatorGuard(): ?string;
 
     /* -----------------------------------------------------------------
      |  Main Methods
@@ -41,33 +55,23 @@ interface Impersonator
      *
      * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed  $impersonater
      * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable|mixed  $impersonated
+     * @param  string|null                                                    $guard
      *
      * @return bool
      */
-    public function start(Impersonatable $impersonater, Impersonatable $impersonated);
+    public function start(Impersonatable $impersonater, Impersonatable $impersonated, $guard = null): bool;
 
     /**
      * Stop the impersonation.
      *
      * @return bool
      */
-    public function stop();
+    public function stop(): bool;
 
     /**
      * Clear the impersonation.
      */
-    public function clear();
-
-    /**
-     * Find a user by the given id.
-     *
-     * @param  int|string  $id
-     *
-     * @return \Arcanedev\LaravelImpersonator\Contracts\Impersonatable
-     *
-     * @throws \Exception
-     */
-    public function findUserById($id);
+    public function clear(): void;
 
     /* -----------------------------------------------------------------
      |  Check Methods
@@ -79,12 +83,12 @@ interface Impersonator
      *
      * @return bool
      */
-    public function isEnabled();
+    public function isEnabled(): bool;
 
     /**
      * Check if the impersonator is impersonating.
      *
      * @return bool
      */
-    public function isImpersonating();
+    public function isImpersonating(): bool;
 }
