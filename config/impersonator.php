@@ -16,7 +16,10 @@ return [
 
     'session' => [
         'key'   => 'impersonator_id',
+
         'guard' => 'impersonator_guard',
+
+        'store' => null,
     ],
 
 ];

@@ -85,9 +85,12 @@ class ImpersonatorServiceProvider extends PackageServiceProvider implements Defe
 
         $auth->extend('session', function (Application $app, $name, array $config) use ($auth) {
             $provider = $auth->createUserProvider($config['provider']);
+            $store    = $app['session']->driver(
+                $app['config']['impersonator.session.store']
+            );
 
             return tap(
-                new Guard\SessionGuard($name, $provider, $app['session.store']),
+                new Guard\SessionGuard($name, $provider, $store),
                 function (IlluminateSessionGuard $guard) use ($app) {
                     if (method_exists($guard, 'setCookieJar'))
                         $guard->setCookieJar($app['cookie']);
