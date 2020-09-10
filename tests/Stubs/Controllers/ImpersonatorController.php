@@ -13,7 +13,6 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 /**
  * Class     ImpersonatorController
  *
- * @package  Arcanedev\LaravelImpersonator\Tests\Stubs\Controllers
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class ImpersonatorController extends Controller

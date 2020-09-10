@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Arcanedev\LaravelImpersonator\Contracts;
 
 /**
- * Interface     Impersonator
+ * Interface  Impersonator
  *
- * @package  Arcanedev\LaravelImpersonator\Contracts
- * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ * @author    ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 interface Impersonator
 {

@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Event;
 /**
  * Class     EventsTest
  *
- * @package  Arcanedev\LaravelImpersonator\Tests
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class EventsTest extends TestCase

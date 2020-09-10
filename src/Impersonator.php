@@ -13,7 +13,6 @@ use Illuminate\Contracts\Foundation\Application;
 /**
  * Class     Impersonator
  *
- * @package  Arcanedev\LaravelImpersonator
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class Impersonator implements ImpersonatorContract

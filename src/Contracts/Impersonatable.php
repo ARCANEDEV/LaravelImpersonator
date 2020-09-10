@@ -7,10 +7,9 @@ namespace Arcanedev\LaravelImpersonator\Contracts;
 use Illuminate\Contracts\Auth\Authenticatable;
 
 /**
- * Interface     Impersonatable
+ * Interface  Impersonatable
  *
- * @package  Arcanedev\LaravelImpersonator\Contracts
- * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ * @author    ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 interface Impersonatable extends Authenticatable
 {

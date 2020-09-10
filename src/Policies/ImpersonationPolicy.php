@@ -11,7 +11,6 @@ use Illuminate\Foundation\Auth\User;
 /**
  * Class     ImpersonationPolicy
  *
- * @package  Arcanedev\LaravelImpersonator\Policies
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class ImpersonationPolicy extends Policy

@@ -12,16 +12,15 @@ use Illuminate\Notifications\Notifiable;
 /**
  * Class     User
  *
- * @package  Arcanedev\LaravelImpersonator\Tests\Stubs\Models
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  *
- * @property  int             id
- * @property  string          name
- * @property  string          email
- * @property  string          password
- * @property  string          remember_token
- * @property  string          created_at
- * @property  \Carbon\Carbon  updated_at
+ * @property  int                         id
+ * @property  string                      name
+ * @property  string                      email
+ * @property  string                      password
+ * @property  string                      remember_token
+ * @property  \Illuminate\Support\Carbon  created_at
+ * @property  \Illuminate\Support\Carbon  updated_at
  */
 class User extends Authenticatable implements Impersonatable
 {

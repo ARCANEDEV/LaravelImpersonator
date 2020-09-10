@@ -13,7 +13,6 @@ use Illuminate\Contracts\Support\DeferrableProvider;
 /**
  * Class     ImpersonatorServiceProvider
  *
- * @package  Arcanedev\LaravelImpersonator
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class ImpersonatorServiceProvider extends PackageServiceProvider implements DeferrableProvider
