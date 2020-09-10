@@ -10,7 +10,6 @@ use Illuminate\Contracts\Auth\Authenticatable;
 /**
  * Class     SessionGuard
  *
- * @package  Arcanedev\LaravelImpersonator\Guard
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class SessionGuard extends BaseSessionGuard

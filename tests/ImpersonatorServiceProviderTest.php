@@ -14,7 +14,6 @@ use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 /**
  * Class     ImpersonatorServiceProviderTest
  *
- * @package  Arcanedev\LaravelImpersonator\Tests
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class ImpersonatorServiceProviderTest extends TestCase

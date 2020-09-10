@@ -11,7 +11,6 @@ use Arcanedev\Support\Providers\AuthorizationServiceProvider as ServiceProvider;
 /**
  * Class     AuthorizationServiceProvider
  *
- * @package  Arcanedev\LaravelImpersonator\Tests\Stubs\Providers
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class AuthorizationServiceProvider extends ServiceProvider

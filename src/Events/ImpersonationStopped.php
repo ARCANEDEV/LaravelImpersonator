@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Arcanedev\LaravelImpersonator\Events;
 
 /**
- * Class     ImpersonationEnded
+ * Class     ImpersonationStopped
  *
- * @package  Arcanedev\LaravelImpersonator\Events
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class ImpersonationStopped extends AbstractImpersonationEvent {}

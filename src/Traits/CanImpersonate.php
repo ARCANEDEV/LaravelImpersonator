@@ -8,9 +8,8 @@ use Arcanedev\LaravelImpersonator\Contracts\Impersonatable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Trait     HasImpersonation
+ * Trait     CanImpersonate
  *
- * @package  Arcanedev\LaravelImpersonator\Traits
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 trait CanImpersonate

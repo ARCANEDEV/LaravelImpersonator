@@ -10,7 +10,6 @@ use Arcanedev\LaravelImpersonator\Tests\TestCase;
 /**
  * Class     ImpersonationPolicyTest
  *
- * @package  Arcanedev\LaravelImpersonator\Tests\Policies
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class ImpersonationPolicyTest extends TestCase

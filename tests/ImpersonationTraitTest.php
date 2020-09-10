@@ -9,7 +9,6 @@ use Arcanedev\LaravelImpersonator\Tests\Stubs\Models\User;
 /**
  * Class     ImpersonationTraitTest
  *
- * @package  Arcanedev\LaravelImpersonator\Tests
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class ImpersonationTraitTest extends TestCase

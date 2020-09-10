@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class     ImpersonationPoliciesTest
  *
- * @package  Arcanedev\LaravelImpersonator\Tests
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class ImpersonationPoliciesTest extends TestCase

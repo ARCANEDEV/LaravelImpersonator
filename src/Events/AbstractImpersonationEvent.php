@@ -12,7 +12,6 @@ use Illuminate\Queue\SerializesModels;
 /**
  * Class     AbstractImpersonationEvent
  *
- * @package  Arcanedev\LaravelImpersonator\Events
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 abstract class AbstractImpersonationEvent

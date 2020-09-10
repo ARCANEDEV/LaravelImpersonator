@@ -11,7 +11,6 @@ use Arcanedev\LaravelImpersonator\Impersonator;
 /**
  * Class     ImpersonatorTest
  *
- * @package  Arcanedev\LaravelImpersonator\Tests
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class ImpersonatorTest extends TestCase

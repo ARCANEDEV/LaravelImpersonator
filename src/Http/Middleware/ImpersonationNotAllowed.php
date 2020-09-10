@@ -10,7 +10,6 @@ use Closure;
 /**
  * Class     ImpersonationNotAllowed
  *
- * @package  Arcanedev\LaravelImpersonator\Http\Middleware
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class ImpersonationNotAllowed

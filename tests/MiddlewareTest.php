@@ -7,7 +7,6 @@ namespace Arcanedev\LaravelImpersonator\Tests;
 /**
  * Class     MiddlewareTest
  *
- * @package  Arcanedev\LaravelImpersonator\Tests
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 class MiddlewareTest extends TestCase
